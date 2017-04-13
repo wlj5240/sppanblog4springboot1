@@ -13,10 +13,11 @@ public interface BlogRepository extends JpaRepository<Blog, Long>{
 	 * 获取推荐博客列表
 	 * 
 	 * @param featured 推荐状态
+	 * @param privacy 权限
 	 * @param pageable
 	 * @return
 	 */
-	Page<Blog> findByFeaturedOrderByCreateAtDesc(int featured, Pageable pageable);
+	Page<Blog> findByFeaturedAndPrivacyOrderByCreateAtDesc(int featured, int privacy, Pageable pageable);
 
 	/**
 	 * 获取博客分页
@@ -29,10 +30,11 @@ public interface BlogRepository extends JpaRepository<Blog, Long>{
 
 	/**
 	 * 根据浏览数量获取博客
+	 * @param privacy 权限
 	 * @param pageable
 	 * @return
 	 */
-	Page<Blog> findAllByOrderByViewsDesc(Pageable pageable);
+	Page<Blog> findByPrivacyOrderByViewsDesc(int privacy, Pageable pageable);
 
 	/**
 	 * 根据分类获取文章数量

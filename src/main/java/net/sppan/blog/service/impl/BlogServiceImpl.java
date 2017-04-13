@@ -37,13 +37,13 @@ public class BlogServiceImpl implements BlogService{
 	@Override
 	public List<Blog> findHotN(int n) {
 		Pageable pageable = new PageRequest(0,n);
-		return blogRepository.findAllByOrderByViewsDesc(pageable).getContent();
+		return blogRepository.findByPrivacyOrderByViewsDesc(0,pageable).getContent();
 	}
 
 	@Override
 	public List<Blog> findFeaturedN(int n) {
 		Pageable pageable = new PageRequest(0,n);
-		return blogRepository.findByFeaturedOrderByCreateAtDesc(1,pageable).getContent();
+		return blogRepository.findByFeaturedAndPrivacyOrderByCreateAtDesc(1,0,pageable).getContent();
 	}
 
 	@Override

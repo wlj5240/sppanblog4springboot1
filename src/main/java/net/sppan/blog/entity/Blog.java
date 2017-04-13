@@ -42,8 +42,15 @@ public class Blog implements Serializable {
 
 	private Integer featured;
 
+	/**
+	 * 权限级别<br>
+	 * 0 公开 1私密
+	 */
 	private Integer privacy;
 
+	/**
+	 * 状态 暂时不启用
+	 */
 	private Integer status;
 
 	@ManyToOne

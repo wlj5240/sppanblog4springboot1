@@ -1,8 +1,8 @@
 package net.sppan.blog.repository;
 
-import net.sppan.blog.entity.Options;
-
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import net.sppan.blog.entity.Options;
 
 public interface OptionsRepository extends JpaRepository<Options, Long>{
 

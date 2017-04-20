@@ -5,6 +5,11 @@ import java.util.Date;
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+
 import net.sppan.blog.common.Constat;
 import net.sppan.blog.entity.LoginLog;
 import net.sppan.blog.entity.Session;
@@ -17,11 +22,6 @@ import net.sppan.blog.service.UserService;
 import net.sppan.blog.utils.CacheKit;
 import net.sppan.blog.utils.MD5Kit;
 import net.sppan.blog.utils.StrKit;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 @Service
 @Transactional
@@ -124,5 +124,4 @@ public class UserServiceImpl implements UserService {
 		dbUser.setPassword(passwordMD5);
 		userRepository.saveAndFlush(dbUser);
 	}
-
 }

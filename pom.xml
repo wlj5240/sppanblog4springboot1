@@ -92,7 +92,7 @@
             <version>2012_u6</version>
         </dependency>
         
-        <!--query dsl -->  
+        <!--query dsl
         <dependency>  
             <groupId>com.querydsl</groupId>  
             <artifactId>querydsl-jpa</artifactId>  
@@ -102,6 +102,7 @@
             <artifactId>querydsl-apt</artifactId>  
             <scope>provided</scope>  
         </dependency> 
+         -->  
 	</dependencies>
 
 	<build>

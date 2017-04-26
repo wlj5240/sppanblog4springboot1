@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import net.sppan.blog.directive.BlogDirective;
 import net.sppan.blog.directive.CategoryDirective;
 import net.sppan.blog.directive.TagDirective;
+import net.sppan.blog.directive.YoulianDirective;
 
 @Configuration
 public class FreeMarkerConfig {
@@ -22,13 +23,16 @@ public class FreeMarkerConfig {
     private BlogDirective blogDirective;
     @Resource
     private TagDirective tagDirective;
-
+    @Resource
+    private YoulianDirective youlianDirective;
+    
     @PostConstruct
     public void setSharedVariable() {
     	try {
 			configuration.setSharedVariable("categoryList", categoryDirective);
 			configuration.setSharedVariable("blogList", blogDirective);
 			configuration.setSharedVariable("tagList", tagDirective);
+			configuration.setSharedVariable("youlianList", youlianDirective);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

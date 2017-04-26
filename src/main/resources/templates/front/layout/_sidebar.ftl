@@ -74,6 +74,11 @@
  	  	<div class="qing-panel-body">
  	  		<ul>
              	<li><a href="https://git.oschina.net/whoismy8023" target="_blank">我的开源中国</a></li>
+ 	  		<@youlianList>
+				<#list list as x>
+             	<li><a href="${x.url}" target="_blank">${x.title}</a></li>
+             	</#list>
+			</@youlianList>
           	</ul>
  	  	</div>
  	</div>

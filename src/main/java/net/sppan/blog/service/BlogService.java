@@ -90,4 +90,10 @@ public interface BlogService {
 	 * @return
 	 */
 	List<Blog> findAll();
+
+	/**
+	 * 更新浏览量
+	 * @param valueOf
+	 */
+	void updateViewsCountById(Long blogId);
 }

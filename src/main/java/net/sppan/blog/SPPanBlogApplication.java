@@ -4,6 +4,7 @@ import javax.annotation.Resource;
 
 import net.sppan.blog.config.intercepter.CommonIntercepter;
 import net.sppan.blog.config.intercepter.LoginIntercepter;
+import net.sppan.blog.config.intercepter.ViewsCountIntercepter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -18,6 +19,8 @@ public class SPPanBlogApplication  extends WebMvcConfigurerAdapter {
     private CommonIntercepter commonInterceptor;
 	@Resource
 	private LoginIntercepter loginIntercepter;
+	@Resource
+	private ViewsCountIntercepter viewsCountIntercepter;
 
 	public static void main(String[] args) {
 		SpringApplication.run(SPPanBlogApplication.class, args);
@@ -34,5 +37,6 @@ public class SPPanBlogApplication  extends WebMvcConfigurerAdapter {
                 .addPathPatterns("/**");
         registry.addInterceptor(loginIntercepter).addPathPatterns("/admin/**")
         		.excludePathPatterns("/admin/login");
+        registry.addInterceptor(viewsCountIntercepter).addPathPatterns("/b/view/**");
     }
 }

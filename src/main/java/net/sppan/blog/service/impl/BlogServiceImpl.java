@@ -57,8 +57,6 @@ public class BlogServiceImpl implements BlogService{
 	@Override
 	public Blog findById(Long id) {
 		Blog blog = blogRepository.findOne(id);
-		//浏览量增加
-		blog.setViews(blog.getViews() + 1);
 		blogRepository.saveAndFlush(blog);
 		return blog;
 	}
@@ -150,6 +148,12 @@ public class BlogServiceImpl implements BlogService{
 	@Override
 	public List<Blog> findAll() {
 		return blogRepository.findAll();
+	}
+
+	@Override
+	public void updateViewsCountById(Long blogId) {
+		Blog dbBlog = blogRepository.findOne(blogId);
+		dbBlog.setViews(dbBlog.getViews() + 1);
 	}
 	
 }

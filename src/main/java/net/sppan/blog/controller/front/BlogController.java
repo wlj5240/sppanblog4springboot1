@@ -17,7 +17,7 @@ import net.sppan.blog.service.BlogService;
  * create by SPPan 2018/1/10
  *
  */
-@Controller
+@Controller("frontBlogController")
 @RequestMapping("/b")
 public class BlogController{
 	

@@ -17,11 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
  * create by SPPan 2018/1/10
  *
  */
-@Controller
+@Controller("frontSearchController")
 public class SearchController {
-	
-	@Resource
-	private BlogService blogService;
 	
 	@Resource
 	private SearcherKit searcherKit;

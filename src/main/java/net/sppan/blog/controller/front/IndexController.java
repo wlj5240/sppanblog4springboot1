@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * create by SPPan 2018/1/10
  *
  */
-@Controller
+@Controller("frontIndexController")
 public class IndexController {
 
 	@RequestMapping("/")

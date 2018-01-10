@@ -13,6 +13,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import net.sppan.blog.entity.Blog;
 import net.sppan.blog.service.BlogService;
 
+/**
+ * create by SPPan 2018/1/10
+ *
+ */
 @Controller
 public class TagController {
 	

@@ -12,6 +12,10 @@ import net.sppan.blog.utils.StrKit;
 
 import org.springframework.data.domain.PageRequest;
 
+/**
+ * create by SPPan 2018/1/10
+ *
+ */
 public class BaseController {
 	@Resource
 	private HttpServletRequest request;

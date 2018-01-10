@@ -16,6 +16,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+/**
+ * create by SPPan 2018/1/10
+ *
+ */
 @Controller
 public class UploadController extends BaseController{
 	

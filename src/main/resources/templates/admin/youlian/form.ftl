@@ -28,7 +28,7 @@
                         <h5>友情链接信息</h5>
                     </div>
                     <div class="ibox-content">
-                        <form class="form-horizontal m-t" id="frm" method="post" action="${ctx!}/admin/youlian/save">
+                        <form class="form-horizontal m-t" id="frm" method="post" action="${ctx!}/ajax/admin/youlian/save">
                         	<input type="hidden" id="id" name="id" value="${(youlian.id)!}">
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">名称：</label>
@@ -104,7 +104,7 @@
     	    	$.ajax({
    	    		   type: "POST",
    	    		   dataType: "json",
-   	    		   url: "${ctx!}/admin/youlian/save",
+   	    		   url: "${ctx!}/ajax/admin/youlian/save",
    	    		   data: $(form).serialize(),
    	    		   success: function(ret){
 	   	    			if(ret.isOk){

@@ -32,7 +32,7 @@
                         <h5>编辑关于我</h5>
                     </div>
                     <div class="ibox-content">
-                        <form class="form-horizontal m-t" id="frm" method="post" action="${ctx!}/admin/about/save">
+                        <form class="form-horizontal m-t" id="frm" method="post" action="${ctx!}/ajax/admin/about/save">
                             <div class="form-group">
                                 <div class="col-sm-12">
                                		<textarea id="editor" name="content" class="form-control">${siteAboutMe!}</textarea>

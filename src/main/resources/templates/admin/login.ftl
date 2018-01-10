@@ -32,7 +32,7 @@
             </div>
             <h3>欢迎使用 请登录</h3>
 
-            <form class="m-t" role="form" id="frm" action="${ctx!}/login" method="POST">
+            <form class="m-t" role="form" id="frm" action="${ctx!}/ajax/login" method="POST">
                 <div class="form-group">
                     <input type="text" name="username" id="username" class="form-control" placeholder="请输入您的邮箱">
                 </div>

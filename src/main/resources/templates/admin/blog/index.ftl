@@ -117,7 +117,7 @@
 			    //必须设置，不然request.getParameter获取不到请求参数
 			    contentType: "application/x-www-form-urlencoded",
 			    //获取数据的Servlet地址  
-			    url: "${ctx!}/admin/blog/list",
+			    url: "${ctx!}/ajax/admin/blog/list",
 			    //表格显示条纹  
 			    striped: true,
 			    //启动分页  
@@ -222,7 +222,7 @@
         		$.ajax({
     	    		   type: "POST",
     	    		   dataType: "json",
-    	    		   url: "${ctx!}/admin/blog/" + id + "/del",
+    	    		   url: "${ctx!}/ajax/admin/blog/" + id + "/del",
     	    		   success: function(msg){
 	 	   	    			layer.msg(msg.msg||"操作成功", {time: 2000},function(){
 	 	   	    				$('#table_list').bootstrapTable("refresh");
@@ -237,7 +237,7 @@
        		$.ajax({
    	    		   type: "POST",
    	    		   dataType: "json",
-   	    		   url: "${ctx!}/admin/blog/" + id + "/change",
+   	    		   url: "${ctx!}/ajax/admin/blog/" + id + "/change",
    	    		   data: {"type":type},
    	    		   success: function(msg){
  	   	    			layer.msg(msg.msg||"操作成功", {time: 2000},function(){

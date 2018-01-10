@@ -12,6 +12,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+/**
+ * create by SPPan 2018/1/10
+ *
+ */
 @SpringBootApplication
 public class SPPanBlogApplication  extends WebMvcConfigurerAdapter {
 	
@@ -33,10 +37,8 @@ public class SPPanBlogApplication  extends WebMvcConfigurerAdapter {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         super.addInterceptors(registry);
-        registry.addInterceptor(commonInterceptor)
-                .addPathPatterns("/**");
-        registry.addInterceptor(loginIntercepter).addPathPatterns("/admin/**")
-        		.excludePathPatterns("/admin/login");
+        registry.addInterceptor(commonInterceptor).addPathPatterns("/**");
+        registry.addInterceptor(loginIntercepter).addPathPatterns("/admin/**").excludePathPatterns("/admin/login");
         registry.addInterceptor(viewsCountIntercepter).addPathPatterns("/b/view/**");
     }
 }

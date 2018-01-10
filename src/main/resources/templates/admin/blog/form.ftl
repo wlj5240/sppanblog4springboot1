@@ -35,7 +35,7 @@
                         <h5>编辑博客</h5>
                     </div>
                     <div class="ibox-content">
-                        <form class="form-horizontal m-t" id="frm" method="post" action="${ctx!}/admin/blog/save">
+                        <form class="form-horizontal m-t" id="frm" method="post" action="${ctx!}/ajax/admin/blog/save">
                         	<input type="hidden" id="id" name="id" value="${(blog.id)!}">
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">标题：</label>
@@ -144,7 +144,7 @@
     	    	$.ajax({
    	    		   type: "POST",
    	    		   dataType: "json",
-   	    		   url: "${ctx!}/admin/blog/save",
+   	    		   url: "${ctx!}/ajax/admin/blog/save",
    	    		   data: $(form).serialize(),
    	    		   success: function(msg){
 	   	    			layer.msg(msg.msg||"操作成功", {time: 2000},function(){
@@ -160,7 +160,7 @@
     	});
 	    
 	    $.ajax({
-     	  url: "${ctx!}/admin/tag/tags_name",
+     	  url: "${ctx!}/ajax/admin/tag/tags_name",
      	  cache: false,
      	  success: function(json){
      		$('#tags').tagit({ 

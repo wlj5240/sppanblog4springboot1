@@ -100,7 +100,7 @@
     	    	$.ajax({
    	    		   type: "POST",
    	    		   dataType: "json",
-   	    		   url: "${ctx!}/updatePwd",
+   	    		   url: "${ctx!}/ajax/updatePwd",
    	    		   data: $(form).serialize(),
    	    		   success: function(msg){
 	   	    			layer.msg(msg.msg||"操作成功", {time: 2000},function(){

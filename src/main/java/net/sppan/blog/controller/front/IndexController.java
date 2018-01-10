@@ -3,6 +3,10 @@ package net.sppan.blog.controller.front;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+/**
+ * create by SPPan 2018/1/10
+ *
+ */
 @Controller
 public class IndexController {
 

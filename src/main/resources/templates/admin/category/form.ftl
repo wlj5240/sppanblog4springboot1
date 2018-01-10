@@ -28,7 +28,7 @@
                         <h5>分类信息</h5>
                     </div>
                     <div class="ibox-content">
-                        <form class="form-horizontal m-t" id="frm" method="POST" action="${ctx!}/admin/category/save">
+                        <form class="form-horizontal m-t" id="frm" method="POST" action="${ctx!}/ajax/admin/category/save">
                         	<input type="hidden" id="id" name="id" value="${(category.id)!}">
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">名称：</label>
@@ -86,7 +86,7 @@
     	    	$.ajax({
    	    		   type: "POST",
    	    		   dataType: "json",
-   	    		   url: "${ctx!}/admin/category/save",
+   	    		   url: "${ctx!}/ajax/admin/category/save",
    	    		   data: $(form).serialize(),
    	    		   success: function(msg){
 	   	    			layer.msg(msg.msg||"操作成功", {time: 2000},function(){

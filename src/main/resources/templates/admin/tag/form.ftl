@@ -28,7 +28,7 @@
                         <h5>标签信息</h5>
                     </div>
                     <div class="ibox-content">
-                        <form class="form-horizontal m-t" id="frm" method="post" action="${ctx!}/admin/tag/save">
+                        <form class="form-horizontal m-t" id="frm" method="post" action="${ctx!}/ajax/admin/tag/save">
                         	<input type="hidden" id="id" name="id" value="${(tag.id)!}">
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">名称：</label>
@@ -86,7 +86,7 @@
     	    	$.ajax({
    	    		   type: "POST",
    	    		   dataType: "json",
-   	    		   url: "${ctx!}/admin/tag/save",
+   	    		   url: "${ctx!}/ajax/admin/tag/save",
    	    		   data: $(form).serialize(),
    	    		   success: function(msg){
 	   	    			layer.msg(msg.msg||"操作成功", {time: 2000},function(){

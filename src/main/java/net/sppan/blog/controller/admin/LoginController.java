@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 
 /**
  * 登录相关controller
@@ -48,7 +49,9 @@ public class LoginController extends BaseController {
             //登录系统
             Session session = userService.login(loginParam.getUsername(), loginParam.getPassword(), loginParam.getKeepLogin(), ip);
             //暂时把sessionId当成token给前台
-            return JsonResult.ok().setMapData("token", session.getSessionId());
+            HashMap<String, Object> data = new HashMap<>();
+            data.put("token", session.getSessionId());
+            return JsonResult.ok().setData(data);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return JsonResult.fail(e.getMessage());
@@ -60,7 +63,10 @@ public class LoginController extends BaseController {
         try {
             Session session = sessionService.findBySessionId(token);
             User user = session.getUser();
-            return JsonResult.ok().setMapData("name", user.getUserName()).setMapData("avatar", user.getAvatar());
+            HashMap<String, Object> data = new HashMap<>();
+            data.put("name", user.getUserName());
+            data.put("avatar", user.getAvatar());
+            return JsonResult.ok().setData(data);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return JsonResult.fail(e.getMessage());

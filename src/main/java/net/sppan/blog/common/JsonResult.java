@@ -18,24 +18,27 @@ public class JsonResult {
         return code;
     }
 
-    public void setCode(int code) {
+    public JsonResult setCode(int code) {
         this.code = code;
+        return this;
     }
 
     public String getMessage() {
         return message;
     }
 
-    public void setMessage(String message) {
+    public JsonResult setMessage(String message) {
         this.message = message;
+        return this;
     }
 
     public Object getData() {
         return data;
     }
 
-    public void setData(Object data) {
+    public JsonResult setData(Object data) {
         this.data = data;
+        return this;
     }
 
     @Override
@@ -72,18 +75,6 @@ public class JsonResult {
         result.setCode(-1);
         result.setMessage(msg);
         return result;
-    }
-
-    public JsonResult setMapData(String key, Object value) {
-        Object data = this.getData();
-        if (data != null && data instanceof Map) {
-            ((Map) data).put(key, value);
-        } else {
-            HashMap<String, Object> hashMap = new HashMap<>();
-            hashMap.put(key, value);
-            setData(hashMap);
-        }
-        return this;
     }
 }
 

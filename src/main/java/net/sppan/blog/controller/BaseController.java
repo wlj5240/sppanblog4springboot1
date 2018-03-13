@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletResponse;
 import net.sppan.blog.common.Constat;
 import net.sppan.blog.entity.User;
 import net.sppan.blog.utils.CacheKit;
-import net.sppan.blog.utils.CookieKit;
 import net.sppan.blog.utils.StrKit;
 
 import org.springframework.data.domain.PageRequest;
@@ -23,25 +22,13 @@ public class BaseController {
 	private HttpServletResponse response;
 	@Resource
 	private CacheKit cacheKit;
-	private User loginUser = null;
 
-	public User getLoginUser() {
-		String sessionId = CookieKit.getSessionIdFromCookie(request, response);
-		if (sessionId != null) {
-			Object object = cacheKit.get(Constat.CACHE_LOGINUSER, sessionId);
-			if (object != null) {
-				loginUser = (User) object;
-			}
+	protected User getLoginUser() {
+		Object loginUser = request.getAttribute("loginUser");
+		if (loginUser != null) {
+			return (User) loginUser;
 		}
-		return loginUser;
-	}
-	
-	public boolean isLogin() {
-		return getLoginUser() != null;
-	}
-
-	public boolean notLogin() {
-		return !isLogin();
+		return null;
 	}
 	
 	protected PageRequest getPageRequest(){

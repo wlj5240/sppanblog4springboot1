@@ -44,10 +44,10 @@ public class CategoryServiceImpl implements CategoryService{
 		if(category.getId() != null){
 			Category dbcCategory = findById(category.getId());
 			dbcCategory.setName(category.getName());
-			dbcCategory.setStatus(category.getStatus());
 			categoryRepository.save(dbcCategory);
 		}else{
 			category.setCount(0);
+			category.setStatus(0);
 			categoryRepository.saveAndFlush(category);
 		}
 	}

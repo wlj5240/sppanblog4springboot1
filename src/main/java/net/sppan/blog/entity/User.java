@@ -40,8 +40,8 @@ public class User implements Serializable {
 	/**
 	 * 状态 <br>
 	 * -1锁定<br>
-	 * 0未激活<br>
-	 * 1激活
+	 * 0启用<br>
+	 * 1禁用
 	 */
 	@Column(nullable = false, columnDefinition = "Integer default 0")
 	private Integer status;

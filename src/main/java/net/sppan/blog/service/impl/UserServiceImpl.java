@@ -94,6 +94,7 @@ public class UserServiceImpl implements UserService {
 			throw new ServiceException("用户不能为空");
 		}
 		user.setCreateAt(new Date());
+		user.setStatus(0);
 		userRepository.saveAndFlush(user);
 	}
 

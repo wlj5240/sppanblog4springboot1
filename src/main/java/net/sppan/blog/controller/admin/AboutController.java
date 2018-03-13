@@ -1,20 +1,30 @@
 package net.sppan.blog.controller.admin;
 
+import net.sppan.blog.common.JsonResult;
 import net.sppan.blog.controller.BaseController;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+import net.sppan.blog.service.OptionsService;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-/**
- * create by SPPan 2018/1/10
- *
- */
-@Controller
-@RequestMapping("/admin/about")
+import javax.annotation.Resource;
+
+@RestController
+@RequestMapping("/ajax/admin/about")
 public class AboutController extends BaseController {
 
-    @GetMapping("/index")
-    public String index() {
-        return "admin/about/index";
+    @Resource
+    private OptionsService optionsService;
+
+    @PostMapping("/save")
+    public JsonResult save(String content) {
+        try {
+            optionsService.saveAboutMe(content);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return JsonResult.fail(e.getMessage());
+        }
+        return JsonResult.ok();
+
     }
 }

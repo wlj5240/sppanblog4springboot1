@@ -1,53 +1,97 @@
 package net.sppan.blog.controller.admin;
 
+import net.sppan.blog.common.JsonResult;
+import net.sppan.blog.common.param.LoginParam;
 import net.sppan.blog.controller.BaseController;
+import net.sppan.blog.entity.Session;
+import net.sppan.blog.entity.User;
+import net.sppan.blog.service.SessionService;
 import net.sppan.blog.service.UserService;
-import net.sppan.blog.utils.CookieKit;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+import net.sppan.blog.utils.IpKit;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * create by SPPan 2018/1/10
- *
+ * 登录相关controller
+ * <p>
+ * create by SPPan
  */
-@Controller
+@RestController
+@RequestMapping("/ajax/login")
 public class LoginController extends BaseController {
+
+    private static Logger logger = LoggerFactory.getLogger(LoginController.class);
 
     @Resource
     private UserService userService;
+    @Autowired
+    private SessionService sessionService;
 
     /**
-     * 跳转登录页面
+     * 登录操作
      *
+     * @param request
+     * @param response
+     * @param loginParam 登录信息
      * @return
      */
-    @GetMapping("/login")
-    public String login() {
-        return "admin/login";
+    @PostMapping("/login")
+    public JsonResult login(HttpServletRequest request, HttpServletResponse response, @RequestBody LoginParam loginParam) {
+        try {
+            String ip = IpKit.getRealIp(request);
+            //登录系统
+            Session session = userService.login(loginParam.getUsername(), loginParam.getPassword(), loginParam.getKeepLogin(), ip);
+            //暂时把sessionId当成token给前台
+            return JsonResult.ok().setMapData("token", session.getSessionId());
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return JsonResult.fail(e.getMessage());
+        }
+    }
+
+    @GetMapping("/getUserInfo")
+    public JsonResult getUserInfo(String token) {
+        try {
+            Session session = sessionService.findBySessionId(token);
+            User user = session.getUser();
+            return JsonResult.ok().setMapData("name", user.getUserName()).setMapData("avatar", user.getAvatar());
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return JsonResult.fail(e.getMessage());
+        }
+    }
+
+    @PostMapping("/updatePwd")
+    public JsonResult updatePwd(HttpServletResponse response, String oldpassword, String password1, String password2) {
+        try {
+            userService.updatePassword(getLoginUser(), oldpassword, password1, password2);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return JsonResult.fail(e.getMessage());
+        }
+        return JsonResult.ok();
     }
 
     /**
      * 注销用户
      *
-     * @param request
-     * @param response
+     * @param token
      * @return
      */
     @GetMapping("/logout")
-    public String logout(HttpServletRequest request, HttpServletResponse response) {
-        String sessionId = CookieKit.getSessionIdFromCookie(request, response);
-        userService.logout(sessionId);
-        CookieKit.removeSessionIdFromCookie(response);
-        return "redirect:/admin";
+    public JsonResult logout(String token) {
+        try {
+            userService.logout(token);
+            return JsonResult.ok();
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return JsonResult.fail(e.getMessage());
+        }
     }
-
-    @GetMapping("/update_form")
-    public String updatePWD() {
-        return "admin/update_form";
-    }
-
 }

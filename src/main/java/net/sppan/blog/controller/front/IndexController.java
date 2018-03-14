@@ -5,18 +5,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * create by SPPan 2018/1/10
- *
  */
 @Controller("frontIndexController")
 public class IndexController {
 
-	@RequestMapping("/")
-	public String index() {
-		return "redirect:/b/1";
-	}
+    @RequestMapping("/")
+    public String index() {
+        return "redirect:/b/1";
+    }
 
-	@RequestMapping("/about")
-	public String about() {
-		return "front/about";
-	}
+    @RequestMapping("/about")
+    public String about() {
+        return "front/about";
+    }
 }

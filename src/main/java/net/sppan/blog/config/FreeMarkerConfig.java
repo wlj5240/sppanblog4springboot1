@@ -16,7 +16,7 @@ public class FreeMarkerConfig {
 
     @Autowired
     private freemarker.template.Configuration configuration;
-    
+
     @Resource
     private CategoryDirective categoryDirective;
     @Resource
@@ -25,16 +25,16 @@ public class FreeMarkerConfig {
     private TagDirective tagDirective;
     @Resource
     private YoulianDirective youlianDirective;
-    
+
     @PostConstruct
     public void setSharedVariable() {
-    	try {
-			configuration.setSharedVariable("categoryList", categoryDirective);
-			configuration.setSharedVariable("blogList", blogDirective);
-			configuration.setSharedVariable("tagList", tagDirective);
-			configuration.setSharedVariable("youlianList", youlianDirective);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+        try {
+            configuration.setSharedVariable("categoryList", categoryDirective);
+            configuration.setSharedVariable("blogList", blogDirective);
+            configuration.setSharedVariable("tagList", tagDirective);
+            configuration.setSharedVariable("youlianList", youlianDirective);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

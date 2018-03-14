@@ -11,62 +11,62 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "tb_tag")
-public class Tag implements Serializable{
+public class Tag implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -194977139613028192L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = -194977139613028192L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
-	private String name;
+    private String name;
 
-	/**
-	 * 显示状态
-	 * <br>
-	 * 0 显示
-	 * <br>
-	 * 1隐藏
-	 * <br>
-	 */
-	private Integer status;
+    /**
+     * 显示状态
+     * <br>
+     * 0 显示
+     * <br>
+     * 1隐藏
+     * <br>
+     */
+    private Integer status;
 
-	@Column(nullable = false,columnDefinition="int default 0")
-	private Integer count;
+    @Column(nullable = false, columnDefinition = "int default 0")
+    private Integer count;
 
-	public Long getId() {
-		return id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public Integer getStatus() {
-		return status;
-	}
+    public Integer getStatus() {
+        return status;
+    }
 
-	public void setStatus(Integer status) {
-		this.status = status;
-	}
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
 
-	public Integer getCount() {
-		return count;
-	}
+    public Integer getCount() {
+        return count;
+    }
 
-	public void setCount(Integer count) {
-		this.count = count;
-	}
+    public void setCount(Integer count) {
+        this.count = count;
+    }
 
 }

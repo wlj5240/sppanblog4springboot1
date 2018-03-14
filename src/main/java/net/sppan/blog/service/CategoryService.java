@@ -8,44 +8,50 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface CategoryService {
-	
-	/**
-	 * 查询可见分类
-	 * @return
-	 */
-	public List<Category> findVisible();
 
-	/**
-	 * 分页查询
-	 * @param pageable
-	 * @return
-	 */
-	public Page<Category> findAll(Pageable pageable);
+    /**
+     * 查询可见分类
+     *
+     * @return
+     */
+    public List<Category> findVisible();
 
-	/**
-	 * 根据ID查找
-	 * @param id
-	 * @return
-	 */
-	public Category findById(Long id);
+    /**
+     * 分页查询
+     *
+     * @param pageable
+     * @return
+     */
+    public Page<Category> findAll(Pageable pageable);
 
-	/**
-	 * 更新
-	 * @param category
-	 */
-	public void saveOrUpdate(Category category);
+    /**
+     * 根据ID查找
+     *
+     * @param id
+     * @return
+     */
+    public Category findById(Long id);
 
-	/**
-	 * 根据ID删除
-	 * @param id
-	 */
-	public void delete(Long id);
+    /**
+     * 更新
+     *
+     * @param category
+     */
+    public void saveOrUpdate(Category category);
 
-	/**
-	 * 显示状态改变
-	 * @param id
-	 */
-	public void changeStatus(Long id);
+    /**
+     * 根据ID删除
+     *
+     * @param id
+     */
+    public void delete(Long id);
 
-	public void countCategoryHasBlog();
+    /**
+     * 显示状态改变
+     *
+     * @param id
+     */
+    public void changeStatus(Long id);
+
+    public void countCategoryHasBlog();
 }

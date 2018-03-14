@@ -50,15 +50,15 @@ import org.wltea.analyzer.lucene.IKAnalyzer;
 @Component
 public class LuceneSearcher implements ISearcher {
 
-	private static Analyzer analyzer = null;//分词器
-    
+    private static Analyzer analyzer = null;//分词器
+
     public static Logger logger = LoggerFactory.getLogger(LuceneSearcher.class);
 
     private static Directory directory;
-    
+
     @Value("${lucene.index.path}")
     private String indexPath;
-    
+
     @Resource
     private BlogService blogService;
 
@@ -72,17 +72,19 @@ public class LuceneSearcher implements ISearcher {
             directory = NIOFSDirectory.open(indexDir);
             analyzer = new IKAnalyzer();
         } catch (IOException e) {
-            logger.error("init lucene path error",e);
+            logger.error("init lucene path error", e);
         }
     }
+
     public static ReentrantLock lock = new ReentrantLock();
-    
+
     public void getCurrentLock() throws InterruptedException {
-        boolean _lock = lock.tryLock(300,TimeUnit.SECONDS);
-        while(!_lock){
-            _lock = lock.tryLock(300,TimeUnit.SECONDS);
+        boolean _lock = lock.tryLock(300, TimeUnit.SECONDS);
+        while (!_lock) {
+            _lock = lock.tryLock(300, TimeUnit.SECONDS);
         }
     }
+
     @Override
     public void addBean(Blog blog) {
         IndexWriter writer = null;
@@ -117,12 +119,12 @@ public class LuceneSearcher implements ISearcher {
             writer = new IndexWriter(directory, iwc);
             writer.deleteDocuments(new Term("id", blogId));
         } catch (IOException e) {
-            logger.error("delete bean to lucene error,beanId:"+blogId,e);
+            logger.error("delete bean to lucene error,beanId:" + blogId, e);
         } catch (InterruptedException e) {
-            logger.error("delete bean to lucene error,beanId:"+blogId,e);
+            logger.error("delete bean to lucene error,beanId:" + blogId, e);
         } finally {
             try {
-                if(writer!=null) {
+                if (writer != null) {
                     writer.close();
                 }
             } catch (IOException e) {
@@ -131,32 +133,32 @@ public class LuceneSearcher implements ISearcher {
             lock.unlock();
         }
     }
-    
+
     /**
      * 删除所有
      */
     @Override
     public void deleteAllBean() {
-    	IndexWriter writer = null;
-    	try {
-    		getCurrentLock();
-    		IndexWriterConfig iwc = new IndexWriterConfig(Version.LUCENE_47, analyzer);
-    		writer = new IndexWriter(directory, iwc);
-    		writer.deleteAll();
-    	} catch (IOException e) {
-    		logger.error("delete allBean to lucene error",e);
-    	} catch (InterruptedException e) {
-    		logger.error("delete allBean to lucene error",e);
-    	} finally {
-    		try {
-    			if(writer!=null) {
-    				writer.close();
-    			}
-    		} catch (IOException e) {
-    			logger.error("close failed", e);
-    		}
-    		lock.unlock();
-    	}
+        IndexWriter writer = null;
+        try {
+            getCurrentLock();
+            IndexWriterConfig iwc = new IndexWriterConfig(Version.LUCENE_47, analyzer);
+            writer = new IndexWriter(directory, iwc);
+            writer.deleteAll();
+        } catch (IOException e) {
+            logger.error("delete allBean to lucene error", e);
+        } catch (InterruptedException e) {
+            logger.error("delete allBean to lucene error", e);
+        } finally {
+            try {
+                if (writer != null) {
+                    writer.close();
+                }
+            } catch (IOException e) {
+                logger.error("close failed", e);
+            }
+            lock.unlock();
+        }
     }
 
     @Override
@@ -168,6 +170,7 @@ public class LuceneSearcher implements ISearcher {
 
     /**
      * 创建Doc
+     *
      * @param blog
      * @return
      */
@@ -179,9 +182,10 @@ public class LuceneSearcher implements ISearcher {
         doc.add(new TextField("content", blog.getContent(), Field.Store.YES));
         return doc;
     }
-    
+
     /**
-     *  转换为blogs
+     * 转换为blogs
+     *
      * @param searcher
      * @param topDocs
      * @return
@@ -193,22 +197,23 @@ public class LuceneSearcher implements ISearcher {
             Document doc = searcher.doc(item.doc);
             Long id = Long.parseLong(doc.get("id"));
             Blog blog = blogService.findById(id);
-            
+
             //此处要注意，必须使用拷贝，否则对象 为持久态的，后面的设置高亮赋值会修改到数据库数据
             Blog result = new Blog();
-    		BeanUtils.copyProperties(blog, result);
-    		
-    		result.setTitle(setHighlighter(query, doc, "title"));
-    		result.setSummary(setHighlighter(query, doc, "summary"));
-    		result.setContent(setHighlighter(query, doc, "content"));
-            
+            BeanUtils.copyProperties(blog, result);
+
+            result.setTitle(setHighlighter(query, doc, "title"));
+            result.setSummary(setHighlighter(query, doc, "summary"));
+            result.setContent(setHighlighter(query, doc, "content"));
+
             blogs.add(result);
         }
         return blogs;
     }
-    
+
     /**
      * 获取Query 对象
+     *
      * @param keyword
      * @param module
      * @return
@@ -217,18 +222,18 @@ public class LuceneSearcher implements ISearcher {
         try {
             QueryParser queryParser1 = new QueryParser(Version.LUCENE_47, "content", analyzer);
             Query termQuery1 = queryParser1.parse(keyword);
-            
+
             QueryParser queryParser2 = new QueryParser(Version.LUCENE_47, "title", analyzer);
             Query termQuery2 = queryParser2.parse(keyword);
-            
+
             QueryParser queryParser3 = new QueryParser(Version.LUCENE_47, "summary", analyzer);
             Query termQuery3 = queryParser3.parse(keyword);
-            
+
             BooleanQuery booleanClauses = new BooleanQuery();
             booleanClauses.add(new BooleanClause(termQuery1, BooleanClause.Occur.SHOULD));
             booleanClauses.add(new BooleanClause(termQuery2, BooleanClause.Occur.SHOULD));
             booleanClauses.add(new BooleanClause(termQuery3, BooleanClause.Occur.SHOULD));
-            
+
             booleanClauses.setMinimumNumberShouldMatch(1);
             return booleanClauses;
         } catch (ParseException e) {
@@ -239,7 +244,7 @@ public class LuceneSearcher implements ISearcher {
 
     /**
      * 通过关键字搜索分页
-     * 
+     *
      * @param keyword 关键字
      */
     @Override
@@ -251,22 +256,20 @@ public class LuceneSearcher implements ISearcher {
             Query query = getQuery(keyword);
             TopDocs topDocs = searcher.search(query, 50);
             List<Blog> searcherBeans = getBlogs(query, searcher, topDocs);
-            
-            Page<Blog> searcherBeanPage = new PageImpl<Blog>(searcherBeans,new PageRequest(0,1000), 1000);
+
+            Page<Blog> searcherBeanPage = new PageImpl<Blog>(searcherBeans, new PageRequest(0, 1000), 1000);
             return searcherBeanPage;
         } catch (Exception e) {
         }
         return null;
     }
-    
+
     /**
      * 分页检索
-     * @param pageNum 当前页
-     * 
-     * @param pageSize 每页条数
-     * 
+     *
+     * @param pageNum     当前页
+     * @param pageSize    每页条数
      * @param queryString 关键字
-     * 
      */
     @Override
     public Page<Blog> search(int pageNum, int pageSize, String queryString) {
@@ -280,8 +283,8 @@ public class LuceneSearcher implements ISearcher {
             TopDocs topDocs = searcher.searchAfter(lastScoreDoc, query, pageSize);
             List<Blog> searcherBeans = getBlogs(query, searcher, topDocs);
             int totalRow = searchTotalRecord(searcher, query);
-            
-            Page<Blog> searcherBeanPage = new PageImpl<Blog>(searcherBeans,new PageRequest(pageNum - 1, pageSize), totalRow);
+
+            Page<Blog> searcherBeanPage = new PageImpl<Blog>(searcherBeans, new PageRequest(pageNum - 1, pageSize), totalRow);
             return searcherBeanPage;
         } catch (IOException e) {
             e.printStackTrace();
@@ -324,28 +327,29 @@ public class LuceneSearcher implements ISearcher {
     }
 
     public void reloadIndex(List<Blog> list) {
-    	deleteAllBean();
-    	for (Blog blog : list) {
+        deleteAllBean();
+        for (Blog blog : list) {
             addBean(blog);
         }
     }
-    
+
     /**
      * 高亮设置
+     *
      * @param query
      * @param doc
      * @param field
      * @return
      */
-    private String setHighlighter(Query query,Document doc,String field){
+    private String setHighlighter(Query query, Document doc, String field) {
         try {
             SimpleHTMLFormatter simpleHtmlFormatter = new SimpleHTMLFormatter("<font color=\"red\">", "</font>");
-            Highlighter highlighter = new Highlighter(simpleHtmlFormatter,new QueryScorer(query));
+            Highlighter highlighter = new Highlighter(simpleHtmlFormatter, new QueryScorer(query));
             String fieldValue = doc.get(field);
-            String highlighterStr = highlighter.getBestFragment(analyzer,field,fieldValue);
-            return highlighterStr == null ? fieldValue:highlighterStr;
+            String highlighterStr = highlighter.getBestFragment(analyzer, field, fieldValue);
+            return highlighterStr == null ? fieldValue : highlighterStr;
         } catch (Exception e) {
-        	e.printStackTrace();
+            e.printStackTrace();
         }
         return null;
     }

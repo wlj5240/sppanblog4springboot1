@@ -13,64 +13,63 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "tb_login_log")
-public class LoginLog implements Serializable{
+public class LoginLog implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -7865774537910926746L;
-	
-	
+    /**
+     *
+     */
+    private static final long serialVersionUID = -7865774537910926746L;
 
-	public LoginLog(User user, Date loginAt, String ip) {
-		super();
-		this.user = user;
-		this.loginAt = loginAt;
-		this.ip = ip;
-	}
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+    public LoginLog(User user, Date loginAt, String ip) {
+        super();
+        this.user = user;
+        this.loginAt = loginAt;
+        this.ip = ip;
+    }
 
-	@OneToOne
-	@JoinColumn(name = "user_id")
-	private User user;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
-	private Date loginAt;
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
-	private String ip;
+    private Date loginAt;
 
-	public Long getId() {
-		return id;
-	}
+    private String ip;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public User getUser() {
-		return user;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setUser(User user) {
-		this.user = user;
-	}
+    public User getUser() {
+        return user;
+    }
 
-	public Date getLoginAt() {
-		return loginAt;
-	}
+    public void setUser(User user) {
+        this.user = user;
+    }
 
-	public void setLoginAt(Date loginAt) {
-		this.loginAt = loginAt;
-	}
+    public Date getLoginAt() {
+        return loginAt;
+    }
 
-	public String getIp() {
-		return ip;
-	}
+    public void setLoginAt(Date loginAt) {
+        this.loginAt = loginAt;
+    }
 
-	public void setIp(String ip) {
-		this.ip = ip;
-	}
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
 
 }

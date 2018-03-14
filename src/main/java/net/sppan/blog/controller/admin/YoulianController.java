@@ -15,7 +15,6 @@ import javax.annotation.Resource;
 
 /**
  * create by SPPan 2018/1/10
- *
  */
 @RestController
 @RequestMapping("/ajax/admin/youlian")

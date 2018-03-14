@@ -12,51 +12,51 @@ import javax.persistence.Table;
 @Table(name = "tb_options")
 public class Options implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -7370664893843513614L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = -7370664893843513614L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
-	private String optionKey;
+    private String optionKey;
 
-	private String optionValue;
+    private String optionValue;
 
-	private String description;
+    private String description;
 
-	public Long getId() {
-		return id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public String getOptionKey() {
-		return optionKey;
-	}
+    public String getOptionKey() {
+        return optionKey;
+    }
 
-	public void setOptionKey(String optionKey) {
-		this.optionKey = optionKey;
-	}
+    public void setOptionKey(String optionKey) {
+        this.optionKey = optionKey;
+    }
 
-	public String getOptionValue() {
-		return optionValue;
-	}
+    public String getOptionValue() {
+        return optionValue;
+    }
 
-	public void setOptionValue(String optionValue) {
-		this.optionValue = optionValue;
-	}
+    public void setOptionValue(String optionValue) {
+        this.optionValue = optionValue;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
 }

@@ -12,66 +12,66 @@ import javax.persistence.Table;
 @Table(name = "tb_youlian")
 public class Youlian implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1744219853139483256L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1744219853139483256L;
 
-	@Id
-	@GeneratedValue
-	private Long id;
+    @Id
+    @GeneratedValue
+    private Long id;
 
-	private String title;
+    private String title;
 
-	@Column(length = 500)
-	private String url;
+    @Column(length = 500)
+    private String url;
 
-	private String description;
+    private String description;
 
-	/**
-	 * 0 可见 1 隐藏
-	 */
-	@Column(nullable = false, columnDefinition = "Integer default 0")
-	private Integer status;
+    /**
+     * 0 可见 1 隐藏
+     */
+    @Column(nullable = false, columnDefinition = "Integer default 0")
+    private Integer status;
 
-	public Long getId() {
-		return id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public String getTitle() {
-		return title;
-	}
+    public String getTitle() {
+        return title;
+    }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-	public String getUrl() {
-		return url;
-	}
+    public String getUrl() {
+        return url;
+    }
 
-	public void setUrl(String url) {
-		this.url = url;
-	}
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public Integer getStatus() {
-		return status;
-	}
+    public Integer getStatus() {
+        return status;
+    }
 
-	public void setStatus(Integer status) {
-		this.status = status;
-	}
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
 
 }

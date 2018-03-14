@@ -20,21 +20,21 @@ import freemarker.template.TemplateException;
 import freemarker.template.TemplateModel;
 
 @Component
-public class TagDirective implements TemplateDirectiveModel{
+public class TagDirective implements TemplateDirectiveModel {
 
-	@Resource
-	private TagService tagService;
-	
-	@Override
-	public void execute(Environment environment, @SuppressWarnings("rawtypes") Map params, TemplateModel[] loopVars,
-			TemplateDirectiveBody templateDirectiveBody) throws TemplateException, IOException {
-		
-		List<Tag> list = tagService.findAll();
-		environment.setVariable("list", new DefaultObjectWrapperBuilder(Configuration.VERSION_2_3_25).build().wrap(list));
+    @Resource
+    private TagService tagService;
+
+    @Override
+    public void execute(Environment environment, @SuppressWarnings("rawtypes") Map params, TemplateModel[] loopVars,
+                        TemplateDirectiveBody templateDirectiveBody) throws TemplateException, IOException {
+
+        List<Tag> list = tagService.findAll();
+        environment.setVariable("list", new DefaultObjectWrapperBuilder(Configuration.VERSION_2_3_25).build().wrap(list));
         if (templateDirectiveBody != null) {
             templateDirectiveBody.render(environment.getOut());
         }
-		
-	}
+
+    }
 
 }

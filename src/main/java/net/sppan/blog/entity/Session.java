@@ -12,55 +12,55 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "tb_session")
-public class Session implements Serializable{
+public class Session implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 443119757745421828L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 443119757745421828L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
-	private String sessionId;
+    private String sessionId;
 
-	@OneToOne
-	@JoinColumn(name = "user_id")
-	private User user;
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
-	private Long expireAt;
+    private Long expireAt;
 
-	public Long getId() {
-		return id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public String getSessionId() {
-		return sessionId;
-	}
+    public String getSessionId() {
+        return sessionId;
+    }
 
-	public void setSessionId(String sessionId) {
-		this.sessionId = sessionId;
-	}
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+    }
 
-	public User getUser() {
-		return user;
-	}
+    public User getUser() {
+        return user;
+    }
 
-	public void setUser(User user) {
-		this.user = user;
-	}
+    public void setUser(User user) {
+        this.user = user;
+    }
 
-	public Long getExpireAt() {
-		return expireAt;
-	}
+    public Long getExpireAt() {
+        return expireAt;
+    }
 
-	public void setExpireAt(Long expireAt) {
-		this.expireAt = expireAt;
-	}
+    public void setExpireAt(Long expireAt) {
+        this.expireAt = expireAt;
+    }
 
 }

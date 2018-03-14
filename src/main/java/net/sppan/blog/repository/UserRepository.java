@@ -8,8 +8,8 @@ import net.sppan.blog.entity.User;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
-	User findByUserName(String userName);
+    User findByUserName(String userName);
 
-	Page<User> findAllByOrderByCreateAtDesc(Pageable pageable);
+    Page<User> findAllByOrderByCreateAtDesc(Pageable pageable);
 
 }

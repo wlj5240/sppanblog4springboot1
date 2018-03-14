@@ -19,21 +19,21 @@ import net.sppan.blog.entity.Youlian;
 import net.sppan.blog.service.YoulianService;
 
 @Component
-public class YoulianDirective implements TemplateDirectiveModel{
+public class YoulianDirective implements TemplateDirectiveModel {
 
-	@Resource
-	private YoulianService youlianService;
-	
-	@Override
-	public void execute(Environment environment, @SuppressWarnings("rawtypes") Map params, TemplateModel[] loopVars,
-			TemplateDirectiveBody templateDirectiveBody) throws TemplateException, IOException {
-		
-		List<Youlian> list = youlianService.findAllVisiable();
-		environment.setVariable("list", new DefaultObjectWrapperBuilder(Configuration.VERSION_2_3_25).build().wrap(list));
+    @Resource
+    private YoulianService youlianService;
+
+    @Override
+    public void execute(Environment environment, @SuppressWarnings("rawtypes") Map params, TemplateModel[] loopVars,
+                        TemplateDirectiveBody templateDirectiveBody) throws TemplateException, IOException {
+
+        List<Youlian> list = youlianService.findAllVisiable();
+        environment.setVariable("list", new DefaultObjectWrapperBuilder(Configuration.VERSION_2_3_25).build().wrap(list));
         if (templateDirectiveBody != null) {
             templateDirectiveBody.render(environment.getOut());
         }
-		
-	}
+
+    }
 
 }

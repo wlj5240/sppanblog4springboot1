@@ -1,8 +1,6 @@
 package net.sppan.blog.config.interceptor;
 
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import net.sppan.blog.common.Constat;
-import net.sppan.blog.common.JsonResult;
 import net.sppan.blog.entity.Session;
 import net.sppan.blog.entity.User;
 import net.sppan.blog.service.SessionService;

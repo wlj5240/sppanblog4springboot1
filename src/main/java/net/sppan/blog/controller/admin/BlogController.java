@@ -21,10 +21,12 @@ public class BlogController extends BaseController {
     private BlogService blogService;
 
     @PostMapping("/list")
-    public Page<Blog> list() {
+    public JsonResult list() {
         PageRequest pageRequest = getPageRequest();
         Page<Blog> page = blogService.findAll(pageRequest);
-        return page;
+        JsonResult ok = JsonResult.ok();
+        ok.setData(page);
+        return ok;
     }
 
     @PostMapping("/save")

@@ -14,31 +14,37 @@ import net.sppan.blog.service.OptionsService;
 
 @Service
 @Transactional
-public class OptionsServiceImpl implements OptionsService{
-	
-	public final String SITEABOUTMEKEY = "siteAboutMe";
-	public final String SITENAMEKEY = "siteName";
-	public final String SITEDESCRIPTIONKEY = "siteDescription";
-	public final String SITEDOMAINKEY = "siteDomain";
-	public final String SITECHANGYANAPPID = "siteChangyanAppId";
-	
-	@Resource
-	private ServletContext servletContext;
-	
-	@Resource
-	private OptionsRepository optionsRepository;
+public class OptionsServiceImpl implements OptionsService {
 
-	@Override
-	public List<Options> findAll() {
-		return optionsRepository.findAll();
-	}
+    public final String SITEABOUTMEKEY = "siteAboutMe";
+    public final String SITENAMEKEY = "siteName";
+    public final String SITEDESCRIPTIONKEY = "siteDescription";
+    public final String SITEDOMAINKEY = "siteDomain";
+    public final String SITECHANGYANAPPID = "siteChangyanAppId";
 
-	@Override
-	public void saveAboutMe(String content) {
-		Options about = optionsRepository.findByOptionKey(SITEABOUTMEKEY);
-		about.setOptionValue(content);
-		optionsRepository.save(about);
-		
-		servletContext.setAttribute(about.getOptionKey(), about.getOptionValue());
-	}
+    @Resource
+    private ServletContext servletContext;
+
+    @Resource
+    private OptionsRepository optionsRepository;
+
+    @Override
+    public List<Options> findAll() {
+        return optionsRepository.findAll();
+    }
+
+    @Override
+    public void saveAboutMe(String content) {
+        Options about = optionsRepository.findByOptionKey(SITEABOUTMEKEY);
+        about.setOptionValue(content);
+        optionsRepository.save(about);
+
+        servletContext.setAttribute(about.getOptionKey(), about.getOptionValue());
+    }
+
+    @Override
+    public String getAboutMe() {
+        Options about = optionsRepository.findByOptionKey(SITEABOUTMEKEY);
+        return about.getOptionValue();
+    }
 }

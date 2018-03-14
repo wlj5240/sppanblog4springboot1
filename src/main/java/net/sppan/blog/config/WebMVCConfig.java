@@ -30,7 +30,9 @@ public class WebMVCConfig extends WebMvcConfigurerAdapter {
     public void addInterceptors(InterceptorRegistry registry) {
         super.addInterceptors(registry);
         registry.addInterceptor(commonInterceptor).addPathPatterns("/**");
-        registry.addInterceptor(loginInterceptor).addPathPatterns("/admin/**").excludePathPatterns("/admin/login");
+        registry.addInterceptor(loginInterceptor).addPathPatterns("/admin/**").addPathPatterns("/ajax/**")
+                .excludePathPatterns("/ajax/login/**")
+                .excludePathPatterns("/admin/login");
         registry.addInterceptor(viewsCountInterceptor).addPathPatterns("/b/view/**");
     }
 }

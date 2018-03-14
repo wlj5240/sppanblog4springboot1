@@ -21,31 +21,31 @@ import freemarker.template.TemplateException;
 import freemarker.template.TemplateModel;
 
 @Component
-public class BlogDirective implements TemplateDirectiveModel{
-	
-	@Resource
-	private BlogService blogService;
+public class BlogDirective implements TemplateDirectiveModel {
 
-	@Override
-	public void execute(Environment environment, @SuppressWarnings("rawtypes") Map params, TemplateModel[] loopVars,
-			TemplateDirectiveBody templateDirectiveBody) throws TemplateException, IOException {
-		List<Blog> list = new ArrayList<Blog>();
-		if(params != null && params.containsKey("type")){
-			String type = params.get("type").toString();
-			
-			if("views".equalsIgnoreCase(type)){
-				list = blogService.findHotN(5);
-			}
-			
-			if("featured".equalsIgnoreCase(type)){
-				list = blogService.findFeaturedN(5);
-			}
-			
-			environment.setVariable("list", new DefaultObjectWrapperBuilder(Configuration.VERSION_2_3_25).build().wrap(list));
-			if (templateDirectiveBody != null) {
-				templateDirectiveBody.render(environment.getOut());
-			}
-		}
-	}
+    @Resource
+    private BlogService blogService;
+
+    @Override
+    public void execute(Environment environment, @SuppressWarnings("rawtypes") Map params, TemplateModel[] loopVars,
+                        TemplateDirectiveBody templateDirectiveBody) throws TemplateException, IOException {
+        List<Blog> list = new ArrayList<Blog>();
+        if (params != null && params.containsKey("type")) {
+            String type = params.get("type").toString();
+
+            if ("views".equalsIgnoreCase(type)) {
+                list = blogService.findHotN(5);
+            }
+
+            if ("featured".equalsIgnoreCase(type)) {
+                list = blogService.findFeaturedN(5);
+            }
+
+            environment.setVariable("list", new DefaultObjectWrapperBuilder(Configuration.VERSION_2_3_25).build().wrap(list));
+            if (templateDirectiveBody != null) {
+                templateDirectiveBody.render(environment.getOut());
+            }
+        }
+    }
 
 }

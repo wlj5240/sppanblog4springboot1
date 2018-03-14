@@ -12,13 +12,13 @@ import net.sppan.blog.service.SessionService;
 @Service
 @Transactional
 public class SessionServiceImpl implements SessionService {
-	
-	@Resource
-	private SessionRepository sessionRepository;
 
-	@Override
-	public Session findBySessionId(String sessionId) {
-		return sessionRepository.findBySessionId(sessionId);
-	}
+    @Resource
+    private SessionRepository sessionRepository;
+
+    @Override
+    public Session findBySessionId(String sessionId) {
+        return sessionRepository.findBySessionId(sessionId);
+    }
 
 }

@@ -9,54 +9,54 @@ import net.sppan.blog.entity.Youlian;
 
 public interface YoulianService {
 
-	/**
-	 * 查询所有
-	 * 
-	 * @return
-	 */
-	List<Youlian> findAll();
-	
-	/**
-	 * 查询所有可见
-	 * 
-	 * @return
-	 */
-	List<Youlian> findAllVisiable();
+    /**
+     * 查询所有
+     *
+     * @return
+     */
+    List<Youlian> findAll();
 
-	/**
-	 * 分页查询
-	 * 
-	 * @param pageable
-	 * @return
-	 */
-	Page<Youlian> findAll(Pageable pageable);
+    /**
+     * 查询所有可见
+     *
+     * @return
+     */
+    List<Youlian> findAllVisiable();
 
-	/**
-	 * 根据ID查找
-	 * 
-	 * @param id
-	 * @return
-	 */
-	Youlian findById(Long id);
+    /**
+     * 分页查询
+     *
+     * @param pageable
+     * @return
+     */
+    Page<Youlian> findAll(Pageable pageable);
 
-	/**
-	 * 修改或者新增
-	 * 
-	 * @param youlian
-	 */
-	void saveOrUpdate(Youlian youlian);
+    /**
+     * 根据ID查找
+     *
+     * @param id
+     * @return
+     */
+    Youlian findById(Long id);
 
-	/**
-	 * 删除
-	 * 
-	 * @param id
-	 */
-	void delete(Long id);
+    /**
+     * 修改或者新增
+     *
+     * @param youlian
+     */
+    void saveOrUpdate(Youlian youlian);
 
-	/**
-	 * 改变状态
-	 * 
-	 * @param id
-	 */
-	void changeStatus(Long id);
+    /**
+     * 删除
+     *
+     * @param id
+     */
+    void delete(Long id);
+
+    /**
+     * 改变状态
+     *
+     * @param id
+     */
+    void changeStatus(Long id);
 }

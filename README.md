@@ -1,4 +1,15 @@
  **SPPanBlog4SpringBoot博客系统** 
+ 
+2018.03.22
+系统升级v2.0，对系统的管理后台进行了前后端分离，前端使用vue搭建。
+管理系统前端项目地址：https://github.com/whoismy8023/blog-admin-web.git
+
+
+2017.12.12
+
+系统1.0使用Hadmin开发管理后台，和项目集成在一起，详细代码见开源项目的v1.0分支。
+
+
 1. 后台使用springboot、spring data jpa实现。全文检索使用Lucene。
 2. 模版引擎使用超级经典的freemarker。
 3. 管理后台UI使用Hadmin后台模版框架。

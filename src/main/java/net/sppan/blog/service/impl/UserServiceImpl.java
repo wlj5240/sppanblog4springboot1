@@ -48,6 +48,9 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             throw new ServiceException("用户不存在");
         }
+        if (user.getStatus() != 0) {
+            throw new ServiceException("用户状态不可用");
+        }
         String passwordMD5 = MD5Kit.generatePasswordMD5(password, user.getSalt());
         if (passwordMD5 != null && passwordMD5.equalsIgnoreCase(user.getPassword())) {
             // 如果用户勾选保持登录，暂定过期时间为 3 年，否则为 120 分钟，单位为秒

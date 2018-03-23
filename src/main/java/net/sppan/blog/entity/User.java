@@ -12,6 +12,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import net.sppan.blog.common.Constat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -33,8 +34,10 @@ public class User implements Serializable {
 
     private String userName;
 
+    @JsonIgnore
     private String password;
 
+    @JsonIgnore
     private String salt;
 
     /**

@@ -23,10 +23,10 @@ import java.util.HashMap;
  * create by SPPan
  */
 @RestController
-@RequestMapping("/ajax/login")
-public class LoginAdminAdminController extends BaseAdminController {
+@RequestMapping("/ajax/admin/login")
+public class LoginAdminController extends _BaseAdminController {
 
-    private static Logger logger = LoggerFactory.getLogger(LoginAdminAdminController.class);
+    private static Logger logger = LoggerFactory.getLogger(LoginAdminController.class);
 
     @Resource
     private UserService userService;
@@ -57,7 +57,7 @@ public class LoginAdminAdminController extends BaseAdminController {
         }
     }
 
-    @GetMapping("/getUserInfo")
+    @GetMapping("/user-info")
     public JsonResult getUserInfo(String token) {
         try {
             Session session = sessionService.findBySessionId(token);

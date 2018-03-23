@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/ajax/category")
-public class CategoryController extends BaseController{
+public class CategoryController extends _BaseController {
     @Resource
     private CategoryService categoryService;
 

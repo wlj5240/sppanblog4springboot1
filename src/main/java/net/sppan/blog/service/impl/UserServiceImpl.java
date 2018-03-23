@@ -1,16 +1,5 @@
 package net.sppan.blog.service.impl;
 
-import java.util.Date;
-
-import javax.annotation.Resource;
-import javax.transaction.Transactional;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-
-import net.sppan.blog.common.Constat;
 import net.sppan.blog.entity.LoginLog;
 import net.sppan.blog.entity.Session;
 import net.sppan.blog.entity.User;
@@ -22,6 +11,14 @@ import net.sppan.blog.service.UserService;
 import net.sppan.blog.utils.CacheKit;
 import net.sppan.blog.utils.MD5Kit;
 import net.sppan.blog.utils.StrKit;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+
+import javax.annotation.Resource;
+import javax.transaction.Transactional;
+import java.util.Date;
 
 @Service
 @Transactional
@@ -65,11 +62,8 @@ public class UserServiceImpl implements UserService {
             session.setExpireAt(expireAt);
             sessionRepository.save(session);
 
-            cacheKit.put(Constat.CACHE_LOGINUSER, sessionId, user);
-
             //添加登录日志
             loginLogRepository.save(new LoginLog(user, new Date(), ip));
-
             return session;
         } else {
             throw new ServiceException("用户名或者密码不正确");
@@ -83,7 +77,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void logout(String sessionId) {
-        cacheKit.remove(Constat.CACHE_LOGINUSER, sessionId);
+        Session session = sessionRepository.findBySessionId(sessionId);
+        sessionRepository.delete(session.getId());
     }
 
     @Override

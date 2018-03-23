@@ -1,31 +1,29 @@
 package net.sppan.blog.controller.admin;
 
 import net.sppan.blog.common.JsonResult;
-import net.sppan.blog.entity.Category;
-import net.sppan.blog.service.CategoryService;
+import net.sppan.blog.entity.Tag;
+import net.sppan.blog.service.TagService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @RestController
-@RequestMapping("/ajax/admin/category")
-public class CategoryAdminAdminController extends BaseAdminController {
-    private static Logger logger = LoggerFactory.getLogger(BlogAdminAdminController.class);
+@RequestMapping("/ajax/admin/tag")
+public class TagAdminController extends _BaseAdminController {
+    private static Logger logger = LoggerFactory.getLogger(TagAdminController.class);
     @Resource
-    private CategoryService categoryService;
+    private TagService tagService;
 
     @PostMapping("/list")
     public JsonResult list() {
         try {
             PageRequest pageRequest = getPageRequest();
-            Page<Category> page = categoryService.findAll(pageRequest);
+            Page<Tag> page = tagService.findAll(pageRequest);
             return JsonResult.ok().setData(page);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -34,9 +32,9 @@ public class CategoryAdminAdminController extends BaseAdminController {
     }
 
     @PostMapping("/save")
-    public JsonResult save(Category category) {
+    public JsonResult save(Tag tag) {
         try {
-            categoryService.saveOrUpdate(category);
+            tagService.saveOrUpdate(tag);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return JsonResult.fail(e.getMessage());
@@ -47,7 +45,7 @@ public class CategoryAdminAdminController extends BaseAdminController {
     @PostMapping("/{id}/del")
     public JsonResult delete(@PathVariable Long id) {
         try {
-            categoryService.delete(id);
+            tagService.delete(id);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return JsonResult.fail(e.getMessage());
@@ -55,14 +53,26 @@ public class CategoryAdminAdminController extends BaseAdminController {
         return JsonResult.ok();
     }
 
-    @PostMapping("/{id}/changeStatus")
+    @PostMapping("/{id}/change_status")
     public JsonResult changeStatus(@PathVariable Long id) {
         try {
-            categoryService.changeStatus(id);
+            tagService.changeStatus(id);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return JsonResult.fail(e.getMessage());
         }
         return JsonResult.ok();
     }
+
+    @GetMapping("/tags_name")
+    public JsonResult tags_name() {
+        try {
+            List<String> tagsList = tagService.findAllNameList();
+            return JsonResult.ok().setData(tagsList);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return JsonResult.fail(e.getMessage());
+        }
+    }
+
 }

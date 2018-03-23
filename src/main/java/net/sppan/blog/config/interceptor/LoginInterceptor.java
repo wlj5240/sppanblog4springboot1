@@ -1,11 +1,8 @@
 package net.sppan.blog.config.interceptor;
 
-import net.sppan.blog.common.Constat;
 import net.sppan.blog.entity.Session;
 import net.sppan.blog.entity.User;
 import net.sppan.blog.service.SessionService;
-import net.sppan.blog.service.UserService;
-import net.sppan.blog.utils.CacheKit;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -23,11 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 public class LoginInterceptor implements HandlerInterceptor {
 
     @Resource
-    private CacheKit cacheKit;
-    @Resource
     private SessionService sessionService;
-    @Resource
-    private UserService userService;
 
     @Override
     public boolean preHandle(HttpServletRequest request,
@@ -35,21 +28,12 @@ public class LoginInterceptor implements HandlerInterceptor {
         String sessionId = request.getHeader("X-Token");
         //如果获取的session不为空，证明浏览器端有登录记录
         if (sessionId != null) {
-            //从登录缓存中取当前的登录用户
-            Object object = cacheKit.get(Constat.CACHE_LOGINUSER, sessionId);
-            if (object != null) {
-                request.setAttribute("loginUser", object);
+            Session session = sessionService.findBySessionId(sessionId);
+            //数据库中存在session，并且还没有过期，则进行登录操作
+            if (session != null && session.getExpireAt() - System.currentTimeMillis() > 0) {
+                User user = session.getUser();
+                request.setAttribute("loginUser", user);
                 return true;
-            } else {
-                //如果缓存中没有登录的用户，则去数据库中取对应的session
-                Session session = sessionService.findBySessionId(sessionId);
-                //数据库中存在session，并且还没有过期，则进行登录操作
-                if (session != null && session.getExpireAt() - System.currentTimeMillis() > 0) {
-                    User user = session.getUser();
-                    cacheKit.put(Constat.CACHE_LOGINUSER, sessionId, user);
-                    request.setAttribute("loginUser", user);
-                    return true;
-                }
             }
         }
         //跳转到登录页面

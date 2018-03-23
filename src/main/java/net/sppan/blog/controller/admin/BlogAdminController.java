@@ -17,8 +17,8 @@ import javax.annotation.Resource;
 
 @RestController
 @RequestMapping("/ajax/admin/blog")
-public class BlogAdminAdminController extends BaseAdminController {
-    private static Logger logger = LoggerFactory.getLogger(BlogAdminAdminController.class);
+public class BlogAdminController extends _BaseAdminController {
+    private static Logger logger = LoggerFactory.getLogger(BlogAdminController.class);
 
     @Resource
     private BlogService blogService;
@@ -30,7 +30,7 @@ public class BlogAdminAdminController extends BaseAdminController {
         try {
             PageRequest pageRequest = getPageRequest();
             Page<Blog> page = blogService.findAll(pageRequest);
-            return  JsonResult.ok().setData(page);
+            return JsonResult.ok().setData(page);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return JsonResult.fail(e.getMessage());
@@ -53,6 +53,17 @@ public class BlogAdminAdminController extends BaseAdminController {
     public JsonResult change(@PathVariable Long id, String type) {
         try {
             blogService.change(id, type);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return JsonResult.fail(e.getMessage());
+        }
+        return JsonResult.ok();
+    }
+
+    @PostMapping("/{id}/change_status")
+    public JsonResult changeStatus(@PathVariable Long id) {
+        try {
+            blogService.change(id, "status");
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return JsonResult.fail(e.getMessage());

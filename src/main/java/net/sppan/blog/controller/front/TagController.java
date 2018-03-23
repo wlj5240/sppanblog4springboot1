@@ -14,7 +14,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/ajax/tag")
-public class TagController extends BaseController{
+public class TagController extends _BaseController {
 
     @Resource
     private TagService tagService;

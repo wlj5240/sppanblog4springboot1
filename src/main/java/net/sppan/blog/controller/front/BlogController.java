@@ -20,8 +20,8 @@ import javax.annotation.Resource;
  */
 @RestController
 @RequestMapping("/ajax/post")
-public class BlogController extends BaseController {
-    private static Logger logger = LoggerFactory.getLogger(BlogController.class);
+public class BlogController extends _BaseController {
+    private static Logger logger = LoggerFactory.getLogger(_BaseController.class);
     @Resource
     private BlogService blogService;
     @Resource

@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/ajax/youlian")
-public class YoulianController extends BaseController{
+public class YoulianController extends _BaseController {
     @Resource
     private YoulianService youlianService;
 

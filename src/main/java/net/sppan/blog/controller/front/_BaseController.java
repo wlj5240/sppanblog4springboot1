@@ -1,30 +1,17 @@
-package net.sppan.blog.controller.admin;
+package net.sppan.blog.controller.front;
+
+import net.sppan.blog.utils.StrKit;
+import org.springframework.data.domain.PageRequest;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import net.sppan.blog.common.Constat;
-import net.sppan.blog.entity.User;
-import net.sppan.blog.utils.CacheKit;
-import net.sppan.blog.utils.StrKit;
-
-import org.springframework.data.domain.PageRequest;
 
 /**
  * create by SPPan 2018/1/10
  */
-public class BaseAdminController {
+public class _BaseController {
     @Resource
     private HttpServletRequest request;
-
-    protected User getLoginUser() {
-        Object loginUser = request.getAttribute("loginUser");
-        if (loginUser != null) {
-            return (User) loginUser;
-        }
-        return null;
-    }
 
     protected PageRequest getPageRequest() {
         Integer pageNumber = 0;

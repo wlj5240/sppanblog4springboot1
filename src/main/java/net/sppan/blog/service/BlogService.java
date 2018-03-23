@@ -31,9 +31,8 @@ public interface BlogService {
     /**
      * 获取分页
      *
-     * @param categoryId  类型ID
-     * @param privacy     权限
-     * @param pageRequest
+     * @param categoryId 类型ID
+     * @param privacy    权限
      * @return
      */
     Page<Blog> findByCategoryANDPrivacy(Long categoryId, int privacy, Pageable pageable);

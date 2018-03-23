@@ -18,7 +18,7 @@ import javax.annotation.Resource;
  */
 @RestController
 @RequestMapping("/ajax/admin/user")
-public class _UserController extends BaseController {
+public class UserAdminController extends BaseController {
     @Resource
     private UserService userService;
 

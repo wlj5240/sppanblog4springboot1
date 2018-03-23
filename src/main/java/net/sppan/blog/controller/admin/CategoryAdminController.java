@@ -16,7 +16,7 @@ import javax.annotation.Resource;
 
 @RestController
 @RequestMapping("/ajax/admin/category")
-public class _CategoryController extends BaseController {
+public class CategoryAdminController extends BaseController {
     @Resource
     private CategoryService categoryService;
 

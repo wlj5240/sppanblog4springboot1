@@ -2,8 +2,8 @@ package net.sppan.blog.controller.admin;
 
 import net.sppan.blog.common.JsonResult;
 import net.sppan.blog.controller.BaseController;
-import net.sppan.blog.entity.Blog;
-import net.sppan.blog.service.BlogService;
+import net.sppan.blog.entity.Youlian;
+import net.sppan.blog.service.YoulianService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,38 +13,28 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 
+/**
+ * create by SPPan 2018/1/10
+ */
 @RestController
-@RequestMapping("/ajax/admin/blog")
-public class _BlogController extends BaseController {
-
+@RequestMapping("/ajax/admin/youlian")
+public class YoulianAdminController extends BaseController {
     @Resource
-    private BlogService blogService;
+    private YoulianService youlianService;
 
     @PostMapping("/list")
     public JsonResult list() {
         PageRequest pageRequest = getPageRequest();
-        Page<Blog> page = blogService.findAll(pageRequest);
+        Page<Youlian> page = youlianService.findAll(pageRequest);
         JsonResult ok = JsonResult.ok();
         ok.setData(page);
         return ok;
     }
 
     @PostMapping("/save")
-    public JsonResult save(Blog blog) {
+    public JsonResult save(Youlian youlian) {
         try {
-            blog.setAuthor(getLoginUser());
-            blogService.saveOrUpdate(blog);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return JsonResult.fail(e.getMessage());
-        }
-        return JsonResult.ok();
-    }
-
-    @PostMapping("/{id}/change")
-    public JsonResult change(@PathVariable Long id, String type) {
-        try {
-            blogService.change(id, type);
+            youlianService.saveOrUpdate(youlian);
         } catch (Exception e) {
             e.printStackTrace();
             return JsonResult.fail(e.getMessage());
@@ -55,7 +45,18 @@ public class _BlogController extends BaseController {
     @PostMapping("/{id}/del")
     public JsonResult delete(@PathVariable Long id) {
         try {
-            blogService.delete(id);
+            youlianService.delete(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return JsonResult.fail(e.getMessage());
+        }
+        return JsonResult.ok();
+    }
+
+    @PostMapping("/{id}/changeStatus")
+    public JsonResult changeStatus(@PathVariable Long id) {
+        try {
+            youlianService.changeStatus(id);
         } catch (Exception e) {
             e.printStackTrace();
             return JsonResult.fail(e.getMessage());

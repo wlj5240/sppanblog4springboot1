@@ -2,34 +2,49 @@ package net.sppan.blog.controller.admin;
 
 import net.sppan.blog.common.JsonResult;
 import net.sppan.blog.controller.BaseController;
-import net.sppan.blog.entity.Tag;
-import net.sppan.blog.service.TagService;
+import net.sppan.blog.entity.Blog;
+import net.sppan.blog.service.BlogService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 @RestController
-@RequestMapping("/ajax/admin/tag")
-public class _TagController extends BaseController {
+@RequestMapping("/ajax/admin/blog")
+public class BlogAdminController extends BaseController {
+
     @Resource
-    private TagService tagService;
+    private BlogService blogService;
 
     @PostMapping("/list")
     public JsonResult list() {
         PageRequest pageRequest = getPageRequest();
-        Page<Tag> page = tagService.findAll(pageRequest);
+        Page<Blog> page = blogService.findAll(pageRequest);
         JsonResult ok = JsonResult.ok();
         ok.setData(page);
         return ok;
     }
 
     @PostMapping("/save")
-    public JsonResult save(Tag tag) {
+    public JsonResult save(Blog blog) {
         try {
-            tagService.saveOrUpdate(tag);
+            blog.setAuthor(getLoginUser());
+            blogService.saveOrUpdate(blog);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return JsonResult.fail(e.getMessage());
+        }
+        return JsonResult.ok();
+    }
+
+    @PostMapping("/{id}/change")
+    public JsonResult change(@PathVariable Long id, String type) {
+        try {
+            blogService.change(id, type);
         } catch (Exception e) {
             e.printStackTrace();
             return JsonResult.fail(e.getMessage());
@@ -40,29 +55,11 @@ public class _TagController extends BaseController {
     @PostMapping("/{id}/del")
     public JsonResult delete(@PathVariable Long id) {
         try {
-            tagService.delete(id);
+            blogService.delete(id);
         } catch (Exception e) {
             e.printStackTrace();
             return JsonResult.fail(e.getMessage());
         }
         return JsonResult.ok();
     }
-
-    @PostMapping("/{id}/changeStatus")
-    public JsonResult changeStatus(@PathVariable Long id) {
-        try {
-            tagService.changeStatus(id);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return JsonResult.fail(e.getMessage());
-        }
-        return JsonResult.ok();
-    }
-
-    @GetMapping("/tags_name")
-    public List<String> tags_name() {
-        List<String> tagsList = tagService.findAllNameList();
-        return tagsList;
-    }
-
 }

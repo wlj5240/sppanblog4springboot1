@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import java.util.List;
 
-@RestController("frontYoulianController")
+@RestController
+@RequestMapping("/ajax/youlian")
 public class YoulianController {
     @Resource
     private YoulianService youlianService;

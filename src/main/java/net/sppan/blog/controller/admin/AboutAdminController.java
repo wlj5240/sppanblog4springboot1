@@ -13,9 +13,9 @@ import javax.annotation.Resource;
 
 @RestController
 @RequestMapping("/ajax/admin/about")
-public class _AboutController extends BaseController {
+public class AboutAdminController extends BaseController {
 
-    private static Logger logger = LoggerFactory.getLogger(_AboutController.class);
+    private static Logger logger = LoggerFactory.getLogger(AboutAdminController.class);
 
     @Resource
     private OptionsService optionsService;

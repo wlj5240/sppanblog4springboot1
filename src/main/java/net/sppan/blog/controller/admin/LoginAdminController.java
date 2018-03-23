@@ -25,9 +25,9 @@ import java.util.HashMap;
  */
 @RestController
 @RequestMapping("/ajax/login")
-public class _LoginController extends BaseController {
+public class LoginAdminController extends BaseController {
 
-    private static Logger logger = LoggerFactory.getLogger(_LoginController.class);
+    private static Logger logger = LoggerFactory.getLogger(LoginAdminController.class);
 
     @Resource
     private UserService userService;

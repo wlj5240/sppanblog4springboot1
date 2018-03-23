@@ -1,9 +1,10 @@
 package net.sppan.blog.controller.admin;
 
 import net.sppan.blog.common.JsonResult;
-import net.sppan.blog.controller.BaseController;
 import net.sppan.blog.entity.Tag;
 import net.sppan.blog.service.TagService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
@@ -13,17 +14,21 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/ajax/admin/tag")
-public class TagAdminController extends BaseController {
+public class TagAdminAdminController extends BaseAdminController {
+    private static Logger logger = LoggerFactory.getLogger(TagAdminAdminController.class);
     @Resource
     private TagService tagService;
 
     @PostMapping("/list")
     public JsonResult list() {
-        PageRequest pageRequest = getPageRequest();
-        Page<Tag> page = tagService.findAll(pageRequest);
-        JsonResult ok = JsonResult.ok();
-        ok.setData(page);
-        return ok;
+        try {
+            PageRequest pageRequest = getPageRequest();
+            Page<Tag> page = tagService.findAll(pageRequest);
+            return JsonResult.ok().setData(page);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return JsonResult.fail(e.getMessage());
+        }
     }
 
     @PostMapping("/save")
@@ -31,7 +36,7 @@ public class TagAdminController extends BaseController {
         try {
             tagService.saveOrUpdate(tag);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             return JsonResult.fail(e.getMessage());
         }
         return JsonResult.ok();
@@ -42,7 +47,7 @@ public class TagAdminController extends BaseController {
         try {
             tagService.delete(id);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             return JsonResult.fail(e.getMessage());
         }
         return JsonResult.ok();
@@ -53,16 +58,21 @@ public class TagAdminController extends BaseController {
         try {
             tagService.changeStatus(id);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             return JsonResult.fail(e.getMessage());
         }
         return JsonResult.ok();
     }
 
     @GetMapping("/tags_name")
-    public List<String> tags_name() {
-        List<String> tagsList = tagService.findAllNameList();
-        return tagsList;
+    public JsonResult tags_name() {
+        try {
+            List<String> tagsList = tagService.findAllNameList();
+            return JsonResult.ok().setData(tagsList);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return JsonResult.fail(e.getMessage());
+        }
     }
 
 }

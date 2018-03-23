@@ -1,9 +1,10 @@
 package net.sppan.blog.controller.admin;
 
 import net.sppan.blog.common.JsonResult;
-import net.sppan.blog.controller.BaseController;
-import net.sppan.blog.entity.Blog;
-import net.sppan.blog.service.BlogService;
+import net.sppan.blog.entity.User;
+import net.sppan.blog.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,40 +14,35 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 
+/**
+ * create by SPPan 2018/1/10
+ */
 @RestController
-@RequestMapping("/ajax/admin/blog")
-public class BlogAdminController extends BaseController {
-
+@RequestMapping("/ajax/admin/user")
+public class UserAdminAdminController extends BaseAdminController {
+    private static Logger logger = LoggerFactory.getLogger(UserAdminAdminController.class);
     @Resource
-    private BlogService blogService;
+    private UserService userService;
 
     @PostMapping("/list")
     public JsonResult list() {
-        PageRequest pageRequest = getPageRequest();
-        Page<Blog> page = blogService.findAll(pageRequest);
-        JsonResult ok = JsonResult.ok();
-        ok.setData(page);
-        return ok;
+        try {
+            PageRequest pageRequest = getPageRequest();
+            Page<User> page = userService.findAll(pageRequest);
+            return JsonResult.ok().setData(page);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return JsonResult.fail(e.getMessage());
+        }
+
     }
 
     @PostMapping("/save")
-    public JsonResult save(Blog blog) {
+    public JsonResult save(User user) {
         try {
-            blog.setAuthor(getLoginUser());
-            blogService.saveOrUpdate(blog);
+            userService.saveOrUpdate(user);
         } catch (Exception e) {
-            e.printStackTrace();
-            return JsonResult.fail(e.getMessage());
-        }
-        return JsonResult.ok();
-    }
-
-    @PostMapping("/{id}/change")
-    public JsonResult change(@PathVariable Long id, String type) {
-        try {
-            blogService.change(id, type);
-        } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             return JsonResult.fail(e.getMessage());
         }
         return JsonResult.ok();
@@ -55,9 +51,9 @@ public class BlogAdminController extends BaseController {
     @PostMapping("/{id}/del")
     public JsonResult delete(@PathVariable Long id) {
         try {
-            blogService.delete(id);
+            userService.delete(id);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             return JsonResult.fail(e.getMessage());
         }
         return JsonResult.ok();

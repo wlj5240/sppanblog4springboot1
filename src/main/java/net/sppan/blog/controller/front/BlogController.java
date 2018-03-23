@@ -5,8 +5,9 @@ import net.sppan.blog.entity.Blog;
 import net.sppan.blog.lucene.SearcherKit;
 import net.sppan.blog.service.BlogService;
 import net.sppan.blog.utils.StrKit;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,66 +20,73 @@ import javax.annotation.Resource;
  */
 @RestController
 @RequestMapping("/ajax/post")
-public class BlogController {
-
+public class BlogController extends BaseController {
+    private static Logger logger = LoggerFactory.getLogger(BlogController.class);
     @Resource
     private BlogService blogService;
     @Resource
     private SearcherKit searcherKit;
 
     @RequestMapping("/list")
-    public JsonResult listAll(
-            @RequestParam(required = false, defaultValue = "1") Integer p) {
-        PageRequest pageRequest = new PageRequest(p - 1, 5);
-        Page<Blog> page = blogService.findAll(pageRequest);
-        JsonResult ok = JsonResult.ok();
-        ok.setData(page);
-        return ok;
+    public JsonResult listAll() {
+        try {
+            Page<Blog> page = blogService.findAll(getPageRequest());
+            return JsonResult.ok().setData(page);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return JsonResult.fail(e.getMessage());
+        }
     }
 
     @RequestMapping("/search")
     public JsonResult index(
             @RequestParam String keyword,
-            @RequestParam(required = false, defaultValue = "1") Integer p) {
+            @RequestParam(name = "pageNumber", required = false, defaultValue = "1") Integer pageNumber) {
         JsonResult ok = JsonResult.ok();
         if (StrKit.isBlank(keyword)) {
             return ok;
         }
-        Page<Blog> page = searcherKit.search(p, 10, keyword);
-        ok.setData(page);
-        return ok;
+        try {
+            Page<Blog> page = searcherKit.search(pageNumber, 10, keyword);
+            ok.setData(page);
+            return ok;
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return JsonResult.fail(e.getMessage());
+        }
     }
 
     @RequestMapping("/category/{categoryId}")
-    public JsonResult listBycategoryId(
-            @PathVariable("categoryId") Long categoryId,
-            @RequestParam(required = false, defaultValue = "1") Integer p) {
-        PageRequest pageRequest = new PageRequest(p - 1, 5);
-        Page<Blog> page = blogService.findByCategoryANDPrivacy(categoryId, 0, pageRequest);
-        JsonResult ok = JsonResult.ok();
-        ok.setData(page);
-        return ok;
+    public JsonResult listBycategoryId(@PathVariable("categoryId") Long categoryId) {
+        try {
+            Page<Blog> page = blogService.findByCategoryANDPrivacy(categoryId, 0, getPageRequest());
+            return JsonResult.ok().setData(page);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return JsonResult.fail(e.getMessage());
+        }
     }
 
     @RequestMapping("/tag/{tagName}")
     public JsonResult listByTagId(
-            @PathVariable("tagName") String tagName,
-            @RequestParam(required = false, defaultValue = "1") Integer p) {
-        PageRequest pageRequest = new PageRequest(p - 1, 5);
-        Page<Blog> page = blogService.findByTagName(tagName, pageRequest);
-        JsonResult ok = JsonResult.ok();
-        ok.setData(page);
-        return ok;
+            @PathVariable("tagName") String tagName) {
+        try {
+            Page<Blog> page = blogService.findByTagName(tagName, getPageRequest());
+            return JsonResult.ok().setData(page);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return JsonResult.fail(e.getMessage());
+        }
     }
 
     @RequestMapping("/view/{id}")
-    public JsonResult view(
-            @PathVariable("id") Long id) {
-        Blog blog = blogService.findById(id);
-        JsonResult ok = JsonResult.ok();
-        ok.setData(blog);
-        return ok;
+    public JsonResult view(@PathVariable("id") Long id) {
+        try {
+            Blog blog = blogService.findById(id);
+            return JsonResult.ok().setData(blog);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return JsonResult.fail(e.getMessage());
+        }
     }
-
-
 }

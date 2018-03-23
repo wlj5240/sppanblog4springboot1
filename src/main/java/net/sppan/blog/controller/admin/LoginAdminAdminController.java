@@ -2,7 +2,6 @@ package net.sppan.blog.controller.admin;
 
 import net.sppan.blog.common.JsonResult;
 import net.sppan.blog.common.param.LoginParam;
-import net.sppan.blog.controller.BaseController;
 import net.sppan.blog.entity.Session;
 import net.sppan.blog.entity.User;
 import net.sppan.blog.service.SessionService;
@@ -25,9 +24,9 @@ import java.util.HashMap;
  */
 @RestController
 @RequestMapping("/ajax/login")
-public class LoginAdminController extends BaseController {
+public class LoginAdminAdminController extends BaseAdminController {
 
-    private static Logger logger = LoggerFactory.getLogger(LoginAdminController.class);
+    private static Logger logger = LoggerFactory.getLogger(LoginAdminAdminController.class);
 
     @Resource
     private UserService userService;

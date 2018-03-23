@@ -1,7 +1,6 @@
 package net.sppan.blog.controller.admin;
 
 import net.sppan.blog.common.JsonResult;
-import net.sppan.blog.controller.BaseController;
 import net.sppan.blog.service.OptionsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,9 +12,9 @@ import javax.annotation.Resource;
 
 @RestController
 @RequestMapping("/ajax/admin/about")
-public class AboutAdminController extends BaseController {
+public class AboutAdminAdminController extends BaseAdminController {
 
-    private static Logger logger = LoggerFactory.getLogger(AboutAdminController.class);
+    private static Logger logger = LoggerFactory.getLogger(AboutAdminAdminController.class);
 
     @Resource
     private OptionsService optionsService;

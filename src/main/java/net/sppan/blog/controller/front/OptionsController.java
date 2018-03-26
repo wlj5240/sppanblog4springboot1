@@ -71,4 +71,15 @@ public class OptionsController extends _BaseController {
             return JsonResult.fail(e.getMessage());
         }
     }
+
+    @RequestMapping("/name")
+    public JsonResult name(){
+        try {
+            String name = optionsService.findSiteName();
+            return JsonResult.ok().setData(name);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return JsonResult.fail(e.getMessage());
+        }
+    }
 }

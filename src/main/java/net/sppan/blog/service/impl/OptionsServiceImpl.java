@@ -17,13 +17,6 @@ import org.springframework.util.StringUtils;
 @Transactional
 public class OptionsServiceImpl implements OptionsService {
 
-    public final String SITE_ABOUTME = "siteAboutMe";
-    public final String SITE_NAME = "siteName";
-    public final String SITE_DESCRIPTION = "siteDescription";
-    public final String SITE_ICP = "siteIcp";
-    public final String SITE_BANNER = "siteBanner";
-    public final String SITE_NOTICE = "siteNotice";
-
     @Resource
     private OptionsRepository optionsRepository;
 
@@ -58,6 +51,13 @@ public class OptionsServiceImpl implements OptionsService {
     }
 
     @Override
+    public void saveIcp(String icp) {
+        Options dbIcp = optionsRepository.findByOptionKey(SITE_ICP);
+        dbIcp.setOptionValue(icp);
+        optionsRepository.save(dbIcp);
+    }
+
+    @Override
     public String findDescription() {
         Options desc = optionsRepository.findByOptionKey(SITE_DESCRIPTION);
         if (desc == null) {
@@ -66,6 +66,12 @@ public class OptionsServiceImpl implements OptionsService {
         return desc.getOptionValue();
     }
 
+    @Override
+    public void saveDescription(String desc) {
+        Options dbDesc = optionsRepository.findByOptionKey(SITE_DESCRIPTION);
+        dbDesc.setOptionValue(desc);
+        optionsRepository.save(dbDesc);
+    }
 
     @Override
     public List<String> findBanner() {
@@ -87,6 +93,13 @@ public class OptionsServiceImpl implements OptionsService {
     }
 
     @Override
+    public void saveBanner(String banner) {
+        Options dbBanner = optionsRepository.findByOptionKey(SITE_BANNER);
+        dbBanner.setOptionValue(banner);
+        optionsRepository.save(dbBanner);
+    }
+
+    @Override
     public String findNotice() {
         Options notice = optionsRepository.findByOptionKey(SITE_NOTICE);
         if (notice == null) {
@@ -95,4 +108,26 @@ public class OptionsServiceImpl implements OptionsService {
         return notice.getOptionValue();
     }
 
+    @Override
+    public void saveNotice(String notice) {
+        Options dbNotice = optionsRepository.findByOptionKey(SITE_NOTICE);
+        dbNotice.setOptionValue(notice);
+        optionsRepository.save(dbNotice);
+    }
+
+    @Override
+    public String findSiteName() {
+        Options siteName = optionsRepository.findByOptionKey(SITE_NAME);
+        if (siteName == null) {
+            return null;
+        }
+        return siteName.getOptionValue();
+    }
+
+    @Override
+    public void saveSiteName(String siteName) {
+        Options dbName = optionsRepository.findByOptionKey(SITE_NAME);
+        dbName.setOptionValue(siteName);
+        optionsRepository.save(dbName);
+    }
 }

@@ -1,9 +1,9 @@
 package net.sppan.blog.controller.admin;
 
 import net.sppan.blog.common.JsonResult;
-import net.sppan.blog.entity.Blog;
+import net.sppan.blog.entity.Post;
 import net.sppan.blog.lucene.SearcherKit;
-import net.sppan.blog.service.BlogService;
+import net.sppan.blog.service.PostService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 
 @RestController
-@RequestMapping("/ajax/admin/blog")
-public class BlogAdminController extends _BaseAdminController {
-    private static Logger logger = LoggerFactory.getLogger(BlogAdminController.class);
+@RequestMapping("/ajax/admin/post")
+public class PostAdminController extends _BaseAdminController {
+    private static Logger logger = LoggerFactory.getLogger(PostAdminController.class);
 
     @Resource
-    private BlogService blogService;
+    private PostService postService;
     @Resource
     private SearcherKit searcherKit;
 
@@ -29,7 +29,7 @@ public class BlogAdminController extends _BaseAdminController {
     public JsonResult list() {
         try {
             PageRequest pageRequest = getPageRequest();
-            Page<Blog> page = blogService.findAll(pageRequest);
+            Page<Post> page = postService.findAll(pageRequest);
             return JsonResult.ok().setData(page);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -38,10 +38,10 @@ public class BlogAdminController extends _BaseAdminController {
     }
 
     @PostMapping("/save")
-    public JsonResult save(Blog blog) {
+    public JsonResult save(Post post) {
         try {
-            blog.setAuthor(getLoginUser());
-            blogService.saveOrUpdate(blog);
+            post.setAuthor(getLoginUser());
+            postService.saveOrUpdate(post);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return JsonResult.fail(e.getMessage());
@@ -52,7 +52,7 @@ public class BlogAdminController extends _BaseAdminController {
     @PostMapping("/{id}/change")
     public JsonResult change(@PathVariable Long id, String type) {
         try {
-            blogService.change(id, type);
+            postService.change(id, type);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return JsonResult.fail(e.getMessage());
@@ -63,7 +63,7 @@ public class BlogAdminController extends _BaseAdminController {
     @PostMapping("/{id}/change_status")
     public JsonResult changeStatus(@PathVariable Long id) {
         try {
-            blogService.change(id, "status");
+            postService.change(id, "status");
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return JsonResult.fail(e.getMessage());
@@ -74,7 +74,7 @@ public class BlogAdminController extends _BaseAdminController {
     @PostMapping("/{id}/del")
     public JsonResult delete(@PathVariable Long id) {
         try {
-            blogService.delete(id);
+            postService.delete(id);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return JsonResult.fail(e.getMessage());
@@ -85,7 +85,7 @@ public class BlogAdminController extends _BaseAdminController {
     @PostMapping("/reloadIndex")
     public JsonResult reloadIndex() {
         try {
-            searcherKit.reloadIndex(blogService.findAll());
+            searcherKit.reloadIndex(postService.findAll());
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return JsonResult.fail(e.getMessage());

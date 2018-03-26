@@ -1,8 +1,8 @@
 package net.sppan.blog.common.vo;
 
-import net.sppan.blog.entity.Blog;
+import net.sppan.blog.entity.Post;
 
-public class PostVo extends Blog {
+public class PostVo extends Post {
     private Long prePostId;
     private String prePostTitle;
 

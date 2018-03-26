@@ -9,7 +9,7 @@ import javax.transaction.Transactional;
 import net.sppan.blog.entity.Tag;
 import net.sppan.blog.exception.ServiceException;
 import net.sppan.blog.repository.TagRepository;
-import net.sppan.blog.service.BlogService;
+import net.sppan.blog.service.PostService;
 import net.sppan.blog.service.TagService;
 import net.sppan.blog.utils.StrKit;
 
@@ -25,7 +25,7 @@ public class TagServiceImpl implements TagService {
     private TagRepository tagRepository;
 
     @Resource
-    private BlogService blogService;
+    private PostService postService;
 
     @Override
     public List<Tag> findAll() {
@@ -114,7 +114,7 @@ public class TagServiceImpl implements TagService {
     public void countTagHasBlog() {
         List<Tag> list = tagRepository.findAll();
         for (Tag tag : list) {
-            Long count = blogService.getBlogCountByTag(tag);
+            Long count = postService.getBlogCountByTag(tag);
             tag.setCount(count.intValue());
         }
         tagRepository.save(list);

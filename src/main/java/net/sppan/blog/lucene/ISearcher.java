@@ -2,7 +2,7 @@ package net.sppan.blog.lucene;
 
 import java.util.List;
 
-import net.sppan.blog.entity.Blog;
+import net.sppan.blog.entity.Post;
 
 import org.springframework.data.domain.Page;
 
@@ -15,7 +15,7 @@ public interface ISearcher {
      *
      * @param bean
      */
-    public void addBean(Blog bean);
+    public void addBean(Post bean);
 
     /**
      * 根据ID删除
@@ -34,7 +34,7 @@ public interface ISearcher {
      *
      * @param bean
      */
-    public void updateBean(Blog bean);
+    public void updateBean(Post bean);
 
     /**
      * 分页关键字查询
@@ -42,7 +42,7 @@ public interface ISearcher {
      * @param keyword
      * @return
      */
-    public Page<Blog> search(String keyword);
+    public Page<Post> search(String keyword);
 
     /**
      * 分页关键字查询
@@ -52,12 +52,12 @@ public interface ISearcher {
      * @param queryString
      * @return
      */
-    public Page<Blog> search(int pageNum, int pageSize, String queryString);
+    public Page<Post> search(int pageNum, int pageSize, String queryString);
 
     /**
      * 重建索引
      *
      * @param list 初始blog列表
      */
-    public void reloadIndex(List<Blog> list);
+    public void reloadIndex(List<Post> list);
 }

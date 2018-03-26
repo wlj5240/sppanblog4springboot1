@@ -17,7 +17,7 @@ import javax.annotation.Resource;
 @RestController
 @RequestMapping("/ajax/admin/category")
 public class CategoryAdminController extends _BaseAdminController {
-    private static Logger logger = LoggerFactory.getLogger(BlogAdminController.class);
+    private static Logger logger = LoggerFactory.getLogger(PostAdminController.class);
     @Resource
     private CategoryService categoryService;
 

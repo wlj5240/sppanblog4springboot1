@@ -10,8 +10,8 @@ import java.util.concurrent.locks.ReentrantLock;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
-import net.sppan.blog.entity.Blog;
-import net.sppan.blog.service.BlogService;
+import net.sppan.blog.entity.Post;
+import net.sppan.blog.service.PostService;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
@@ -60,7 +60,7 @@ public class LuceneSearcher implements ISearcher {
     private String indexPath;
 
     @Resource
-    private BlogService blogService;
+    private PostService postService;
 
     @PostConstruct
     public void init() {
@@ -86,13 +86,13 @@ public class LuceneSearcher implements ISearcher {
     }
 
     @Override
-    public void addBean(Blog blog) {
+    public void addBean(Post post) {
         IndexWriter writer = null;
         try {
             getCurrentLock();
             IndexWriterConfig iwc = new IndexWriterConfig(Version.LUCENE_47, analyzer);
             writer = new IndexWriter(directory, iwc);
-            Document doc = createDoc(blog);
+            Document doc = createDoc(post);
             writer.addDocument(doc);
         } catch (IOException e) {
             logger.error("add bean to lucene error", e);
@@ -162,24 +162,24 @@ public class LuceneSearcher implements ISearcher {
     }
 
     @Override
-    public void updateBean(Blog blog) {
-        deleteBean(String.valueOf(blog.getId()));
-        addBean(blog);
+    public void updateBean(Post post) {
+        deleteBean(String.valueOf(post.getId()));
+        addBean(post);
 
     }
 
     /**
      * 创建Doc
      *
-     * @param blog
+     * @param post
      * @return
      */
-    private Document createDoc(Blog blog) {
+    private Document createDoc(Post post) {
         Document doc = new Document();
-        doc.add(new StringField("id", String.valueOf(blog.getId()), Field.Store.YES));
-        doc.add(new TextField("title", blog.getTitle(), Field.Store.YES));
-        doc.add(new TextField("summary", blog.getSummary(), Field.Store.YES));
-        doc.add(new TextField("content", blog.getContent(), Field.Store.YES));
+        doc.add(new StringField("id", String.valueOf(post.getId()), Field.Store.YES));
+        doc.add(new TextField("title", post.getTitle(), Field.Store.YES));
+        doc.add(new TextField("summary", post.getSummary(), Field.Store.YES));
+        doc.add(new TextField("content", post.getContent(), Field.Store.YES));
         return doc;
     }
 
@@ -191,24 +191,24 @@ public class LuceneSearcher implements ISearcher {
      * @return
      * @throws IOException
      */
-    private List<Blog> getBlogs(Query query, IndexSearcher searcher, TopDocs topDocs) throws IOException {
-        List<Blog> blogs = new ArrayList<Blog>();
+    private List<Post> getBlogs(Query query, IndexSearcher searcher, TopDocs topDocs) throws IOException {
+        List<Post> posts = new ArrayList<Post>();
         for (ScoreDoc item : topDocs.scoreDocs) {
             Document doc = searcher.doc(item.doc);
             Long id = Long.parseLong(doc.get("id"));
-            Blog blog = blogService.findById(id);
+            Post post = postService.findById(id);
 
             //此处要注意，必须使用拷贝，否则对象 为持久态的，后面的设置高亮赋值会修改到数据库数据
-            Blog result = new Blog();
-            BeanUtils.copyProperties(blog, result);
+            Post result = new Post();
+            BeanUtils.copyProperties(post, result);
 
             result.setTitle(setHighlighter(query, doc, "title"));
             result.setSummary(setHighlighter(query, doc, "summary"));
             result.setContent(setHighlighter(query, doc, "content"));
 
-            blogs.add(result);
+            posts.add(result);
         }
-        return blogs;
+        return posts;
     }
 
     /**
@@ -248,16 +248,16 @@ public class LuceneSearcher implements ISearcher {
      * @param keyword 关键字
      */
     @Override
-    public Page<Blog> search(String keyword) {
+    public Page<Post> search(String keyword) {
         try {
             IndexReader aIndexReader = DirectoryReader.open(directory);
             IndexSearcher searcher = null;
             searcher = new IndexSearcher(aIndexReader);
             Query query = getQuery(keyword);
             TopDocs topDocs = searcher.search(query, 50);
-            List<Blog> searcherBeans = getBlogs(query, searcher, topDocs);
+            List<Post> searcherBeans = getBlogs(query, searcher, topDocs);
 
-            Page<Blog> searcherBeanPage = new PageImpl<Blog>(searcherBeans, new PageRequest(0, 1000), 1000);
+            Page<Post> searcherBeanPage = new PageImpl<Post>(searcherBeans, new PageRequest(0, 1000), 1000);
             return searcherBeanPage;
         } catch (Exception e) {
         }
@@ -272,7 +272,7 @@ public class LuceneSearcher implements ISearcher {
      * @param queryString 关键字
      */
     @Override
-    public Page<Blog> search(int pageNum, int pageSize, String queryString) {
+    public Page<Post> search(int pageNum, int pageSize, String queryString) {
         IndexReader aIndexReader = null;
         try {
             aIndexReader = DirectoryReader.open(directory);
@@ -281,10 +281,10 @@ public class LuceneSearcher implements ISearcher {
             Query query = getQuery(queryString);
             ScoreDoc lastScoreDoc = getLastScoreDoc(pageNum, pageSize, query, searcher);
             TopDocs topDocs = searcher.searchAfter(lastScoreDoc, query, pageSize);
-            List<Blog> searcherBeans = getBlogs(query, searcher, topDocs);
+            List<Post> searcherBeans = getBlogs(query, searcher, topDocs);
             int totalRow = searchTotalRecord(searcher, query);
 
-            Page<Blog> searcherBeanPage = new PageImpl<Blog>(searcherBeans, new PageRequest(pageNum - 1, pageSize), totalRow);
+            Page<Post> searcherBeanPage = new PageImpl<Post>(searcherBeans, new PageRequest(pageNum - 1, pageSize), totalRow);
             return searcherBeanPage;
         } catch (IOException e) {
             e.printStackTrace();
@@ -326,10 +326,10 @@ public class LuceneSearcher implements ISearcher {
         return docs.length;
     }
 
-    public void reloadIndex(List<Blog> list) {
+    public void reloadIndex(List<Post> list) {
         deleteAllBean();
-        for (Blog blog : list) {
-            addBean(blog);
+        for (Post post : list) {
+            addBean(post);
         }
     }
 

@@ -2,7 +2,7 @@ package net.sppan.blog.lucene;
 
 import java.util.List;
 
-import net.sppan.blog.entity.Blog;
+import net.sppan.blog.entity.Post;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -16,9 +16,9 @@ public class SearcherKit {
     @Qualifier("luceneSearcher")
     private ISearcher mSearcher;
 
-    public void add(Blog blog) {
+    public void add(Post post) {
         checkSearcher();
-        mSearcher.addBean(blog);
+        mSearcher.addBean(post);
     }
 
     public void delete(String blogId) {
@@ -26,18 +26,18 @@ public class SearcherKit {
         mSearcher.deleteBean(blogId);
     }
 
-    public void update(Blog blog) {
+    public void update(Post post) {
         checkSearcher();
-        mSearcher.updateBean(blog);
+        mSearcher.updateBean(post);
     }
 
     /**
      * 执行搜索
      *
      * @param keyword
-     * @return List<Blog>
+     * @return List<Post>
      */
-    public Page<Blog> search(String keyword) {
+    public Page<Post> search(String keyword) {
         checkSearcher();
         return mSearcher.search(keyword);
     }
@@ -50,7 +50,7 @@ public class SearcherKit {
      * @param keyword  关键字
      * @return
      */
-    public Page<Blog> search(int pageNum, int pageSize, String keyword) {
+    public Page<Post> search(int pageNum, int pageSize, String keyword) {
         checkSearcher();
         return mSearcher.search(pageNum, pageSize, keyword);
     }
@@ -67,7 +67,7 @@ public class SearcherKit {
     /**
      * 重检索引
      */
-    public void reloadIndex(List<Blog> list) {
+    public void reloadIndex(List<Post> list) {
         checkSearcher();
         mSearcher.reloadIndex(list);
     }

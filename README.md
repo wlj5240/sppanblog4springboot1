@@ -3,7 +3,7 @@
 #### 2018.03.22
 
 系统升级v2.0，对系统的管理后台进行了前后端分离，前端使用vue搭建。
-管理系统前端项目地址：https://github.com/whoismy8023/blog-admin-web.git
+管理系统前端项目地址：https://github.com/whoismy8023/post-admin-web.git
 
 
 #### 2017.12.12

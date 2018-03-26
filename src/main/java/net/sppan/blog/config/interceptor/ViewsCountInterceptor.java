@@ -12,7 +12,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import net.sppan.blog.service.BlogService;
+import net.sppan.blog.service.PostService;
 
 /**
  * @author SPPan
@@ -24,7 +24,7 @@ public class ViewsCountInterceptor implements HandlerInterceptor {
     private static Map<String, Long> viewList = new HashMap<>();
 
     @Resource
-    private BlogService blogService;
+    private PostService postService;
 
     @SuppressWarnings({"rawtypes"})
     @Override
@@ -41,7 +41,7 @@ public class ViewsCountInterceptor implements HandlerInterceptor {
                 viewList.put(viewKey, currentTimeMillis);
             }
         } else {
-            blogService.updateViewsCountById(Long.valueOf(blogId));
+            postService.updateViewsCountById(Long.valueOf(blogId));
             viewList.put(viewKey, currentTimeMillis);
         }
         return true;

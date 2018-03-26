@@ -6,6 +6,7 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
 
+import net.sppan.blog.common.vo.PostVo;
 import net.sppan.blog.entity.Blog;
 import net.sppan.blog.entity.Category;
 import net.sppan.blog.entity.Tag;
@@ -16,6 +17,7 @@ import net.sppan.blog.service.CategoryService;
 import net.sppan.blog.service.TagService;
 import net.sppan.blog.utils.HtmlFilter;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -57,7 +59,6 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public Blog findById(Long id) {
         Blog blog = blogRepository.findOne(id);
-        blogRepository.saveAndFlush(blog);
         return blog;
     }
 
@@ -155,4 +156,23 @@ public class BlogServiceImpl implements BlogService {
         dbBlog.setViews(dbBlog.getViews() + 1);
     }
 
+    @Override
+    public PostVo findVoById(Long id) {
+        PostVo vo = new PostVo();
+        Blog one = blogRepository.findOne(id);
+        BeanUtils.copyProperties(one, vo);
+
+        Blog pre = blogRepository.findOne(Long.valueOf(id - 1));
+        if (pre != null) {
+            vo.setPrePostId(pre.getId());
+            vo.setPrePostTitle(pre.getTitle());
+        }
+
+        Blog next = blogRepository.findOne(Long.valueOf(id + 1));
+        if (next != null) {
+            vo.setNextPostId(next.getId());
+            vo.setNextPostTitle(next.getTitle());
+        }
+        return vo;
+    }
 }

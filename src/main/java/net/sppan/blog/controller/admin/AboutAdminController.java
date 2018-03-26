@@ -22,7 +22,7 @@ public class AboutAdminController extends _BaseAdminController {
     @PostMapping("content")
     public JsonResult content() {
         try {
-            String aboutMe = optionsService.getAboutMe();
+            String aboutMe = optionsService.findAboutMe();
             return JsonResult.ok().setData(aboutMe);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);

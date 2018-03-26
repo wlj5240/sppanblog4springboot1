@@ -16,5 +16,13 @@ public interface OptionsService {
      */
     void saveAboutMe(String content);
 
-    String getAboutMe();
+    String findAboutMe();
+
+    String findIcp();
+
+    String findDescription();
+
+    List<String> findBanner();
+
+    String findNotice();
 }

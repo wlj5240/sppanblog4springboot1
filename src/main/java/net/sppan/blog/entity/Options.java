@@ -2,11 +2,7 @@ package net.sppan.blog.entity;
 
 import java.io.Serializable;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "tb_options")
@@ -23,6 +19,8 @@ public class Options implements Serializable {
 
     private String optionKey;
 
+    @Lob
+    @Column(columnDefinition="TEXT")
     private String optionValue;
 
     private String description;

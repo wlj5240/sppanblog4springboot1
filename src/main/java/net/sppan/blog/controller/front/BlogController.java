@@ -1,6 +1,7 @@
 package net.sppan.blog.controller.front;
 
 import net.sppan.blog.common.JsonResult;
+import net.sppan.blog.common.vo.PostVo;
 import net.sppan.blog.entity.Blog;
 import net.sppan.blog.lucene.SearcherKit;
 import net.sppan.blog.service.BlogService;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * create by SPPan 2018/1/10
@@ -82,8 +84,30 @@ public class BlogController extends _BaseController {
     @RequestMapping("/view/{id}")
     public JsonResult view(@PathVariable("id") Long id) {
         try {
-            Blog blog = blogService.findById(id);
+            PostVo blog = blogService.findVoById(id);
             return JsonResult.ok().setData(blog);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return JsonResult.fail(e.getMessage());
+        }
+    }
+
+    @RequestMapping("/hots/{n}")
+    public JsonResult hotsN(@PathVariable Integer n) {
+        try {
+            List<Blog> list = blogService.findHotN(n);
+            return JsonResult.ok().setData(list);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return JsonResult.fail(e.getMessage());
+        }
+    }
+
+    @RequestMapping("/featureds/{n}")
+    public JsonResult featuredsN(@PathVariable Integer n) {
+        try {
+            List<Blog> list = blogService.findFeaturedN(n);
+            return JsonResult.ok().setData(list);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return JsonResult.fail(e.getMessage());

@@ -2,8 +2,7 @@
 SQLyog Ultimate v12.09 (64 bit)
 MySQL - 5.5.41 : Database - sppanblog
 *********************************************************************
-*/
-
+*/
 
 /*!40101 SET NAMES utf8 */;
 
@@ -33,8 +32,8 @@ CREATE TABLE `tb_blog` (
   PRIMARY KEY (`id`),
   KEY `FK26qshdwihej4t9niu5e4lmgxv` (`author_id`),
   KEY `FKjawve4qwb5wvb0jkvpv6rs20k` (`category_id`),
-  CONSTRAINT `FK26qshdwihej4t9niu5e4lmgxv` FOREIGN KEY (`author_id`) REFERENCES `tb_user` (`id`),
-  CONSTRAINT `FKjawve4qwb5wvb0jkvpv6rs20k` FOREIGN KEY (`category_id`) REFERENCES `tb_category` (`id`)
+  CONSTRAINT `FKjawve4qwb5wvb0jkvpv6rs20k` FOREIGN KEY (`category_id`) REFERENCES `tb_category` (`id`),
+  CONSTRAINT `FK26qshdwihej4t9niu5e4lmgxv` FOREIGN KEY (`author_id`) REFERENCES `tb_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `tb_blog` */
@@ -77,7 +76,7 @@ CREATE TABLE `tb_options` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `description` varchar(255) DEFAULT NULL,
   `option_key` varchar(255) DEFAULT NULL,
-  `option_value` varchar(255) DEFAULT NULL,
+  `option_value` text,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -129,7 +128,7 @@ CREATE TABLE `tb_user` (
   `status` int(11) NOT NULL DEFAULT '0',
   `user_name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 /*Data for the table `tb_user` */
 

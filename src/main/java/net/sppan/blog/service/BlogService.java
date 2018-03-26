@@ -2,6 +2,7 @@ package net.sppan.blog.service;
 
 import java.util.List;
 
+import net.sppan.blog.common.vo.PostVo;
 import net.sppan.blog.entity.Blog;
 import net.sppan.blog.entity.Category;
 import net.sppan.blog.entity.Tag;
@@ -104,7 +105,9 @@ public interface BlogService {
     /**
      * 更新浏览量
      *
-     * @param valueOf
+     * @param blogId
      */
     void updateViewsCountById(Long blogId);
+
+    PostVo findVoById(Long id);
 }

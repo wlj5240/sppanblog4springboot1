@@ -69,4 +69,6 @@ public interface TagService {
     public void synBlogTag(String tags);
 
     void countTagHasBlog();
+
+    Tag findByName(String tagName);
 }

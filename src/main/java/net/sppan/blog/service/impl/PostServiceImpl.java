@@ -1,26 +1,26 @@
 package net.sppan.blog.service.impl;
 
-import java.util.Date;
-import java.util.List;
-
-import javax.annotation.Resource;
-import javax.transaction.Transactional;
-
 import net.sppan.blog.common.vo.PostVo;
-import net.sppan.blog.entity.Post;
 import net.sppan.blog.entity.Category;
+import net.sppan.blog.entity.Post;
 import net.sppan.blog.entity.Tag;
 import net.sppan.blog.exception.ServiceException;
 import net.sppan.blog.repository.PostRepository;
-import net.sppan.blog.service.PostService;
 import net.sppan.blog.service.CategoryService;
+import net.sppan.blog.service.PostService;
 import net.sppan.blog.service.TagService;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+
+import javax.annotation.Resource;
+import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Service
 @Transactional
@@ -67,11 +67,27 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public void saveOrUpdate(Post post) {
+    public void saveOrUpdate(Post post, String tagArray) {
         if (post == null) {
             throw new ServiceException("操作对象不能为空");
         }
 
+        List<Tag> tagList = new ArrayList<>();
+
+        if (!StringUtils.isEmpty(tagArray)) {
+            String[] tags = tagArray.split(",");
+            for (String tagName : tags) {
+                Tag tag = tagService.findByName(tagName);
+                if (tag == null) {
+                    tag = new Tag();
+                    tag.setName(tagName);
+                    tagService.saveOrUpdate(tag);
+                }
+                tagList.add(tag);
+            }
+        }
+
+        post.setTags(tagList);
         if (post.getId() != null) {
             Post dbPost = findById(post.getId());
             dbPost.setTitle(post.getTitle());
@@ -90,9 +106,6 @@ public class PostServiceImpl implements PostService {
             post.setSummary(post.getSummary());
             postRepository.save(post);
         }
-
-        //同步标签
-        tagService.synBlogTag(post.getTags());
 
         new Thread(new Runnable() {
             @Override

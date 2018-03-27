@@ -120,4 +120,11 @@ public class TagServiceImpl implements TagService {
         tagRepository.save(list);
     }
 
+    @Override
+    public Tag findByName(String tagName) {
+        if (tagName == null) {
+            return null;
+        }
+        return tagRepository.findByName(tagName);
+    }
 }

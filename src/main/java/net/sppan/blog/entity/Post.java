@@ -2,16 +2,9 @@ package net.sppan.blog.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import net.sppan.blog.common.Constat;
 
@@ -60,7 +53,9 @@ public class Post implements Serializable {
     @Column(length = 500)
     private String summary;
 
-    private String tags;
+    @ManyToMany(targetEntity = Tag.class)
+    @JoinTable(name = "tb_post_tag", joinColumns = {@JoinColumn(name = "post_id")}, inverseJoinColumns = {@JoinColumn(name = "tag_id")})
+    private List<Tag> tags;
 
     private String title;
 
@@ -139,11 +134,11 @@ public class Post implements Serializable {
         this.summary = summary;
     }
 
-    public String getTags() {
+    public List<Tag> getTags() {
         return tags;
     }
 
-    public void setTags(String tags) {
+    public void setTags(List<Tag> tags) {
         this.tags = tags;
     }
 

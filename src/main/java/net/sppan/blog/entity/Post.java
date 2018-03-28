@@ -33,6 +33,9 @@ public class Post implements Serializable {
     @JsonFormat(pattern = Constat.DATETIME_FORMAT, timezone = "GMT+8")
     private Date createAt;
 
+    /**
+     * 推荐
+     */
     private Integer featured;
 
     /**
@@ -59,6 +62,18 @@ public class Post implements Serializable {
 
     @Column(nullable = false, columnDefinition = "int default 0")
     private Integer views;
+
+    /**
+     * 点赞次数
+     */
+    @Column(nullable = false, columnDefinition = "int default 0")
+    private Integer upVote;
+
+    /**
+     * 点踩次数
+     */
+    @Column(nullable = false, columnDefinition = "int default 0")
+    private Integer downVote;
 
     public Long getId() {
         return id;
@@ -154,5 +169,21 @@ public class Post implements Serializable {
 
     public void setViews(Integer views) {
         this.views = views;
+    }
+
+    public Integer getUpVote() {
+        return upVote;
+    }
+
+    public void setUpVote(Integer upVote) {
+        this.upVote = upVote;
+    }
+
+    public Integer getDownVote() {
+        return downVote;
+    }
+
+    public void setDownVote(Integer downVote) {
+        this.downVote = downVote;
     }
 }

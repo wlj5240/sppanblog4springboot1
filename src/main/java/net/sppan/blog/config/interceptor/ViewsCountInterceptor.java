@@ -1,18 +1,18 @@
 package net.sppan.blog.config.interceptor;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+import net.sppan.blog.service.PostService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import net.sppan.blog.service.PostService;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author SPPan
@@ -21,10 +21,12 @@ import net.sppan.blog.service.PostService;
  */
 @Component
 public class ViewsCountInterceptor implements HandlerInterceptor {
-    private static Map<String, Long> viewList = new HashMap<>();
 
     @Resource
     private PostService postService;
+    private static Cache<String, Integer> cache = CacheBuilder.newBuilder()
+            .expireAfterWrite(1, TimeUnit.MINUTES)
+            .build();
 
     @SuppressWarnings({"rawtypes"})
     @Override
@@ -34,16 +36,12 @@ public class ViewsCountInterceptor implements HandlerInterceptor {
         String blogId = (String) map.get("id");
         String sessionId = request.getSession().getId();
         String viewKey = sessionId + blogId;
-        Long currentTimeMillis = System.currentTimeMillis();
-        if (viewList.containsKey(viewKey)) {
-            Long oldTimeMillis = (Long) viewList.get(viewKey);
-            if (currentTimeMillis - oldTimeMillis > 3 * 60 * 1000) { // 3分钟
-                viewList.put(viewKey, currentTimeMillis);
-            }
-        } else {
-            postService.updateViewsCountById(Long.valueOf(blogId));
-            viewList.put(viewKey, currentTimeMillis);
+
+        Integer ifPresent = cache.getIfPresent(viewKey);
+        if (ifPresent == null) {
+            postService.increaseViewsCountById(Long.valueOf(blogId));
         }
+        cache.put(viewKey, 1);
         return true;
     }
 

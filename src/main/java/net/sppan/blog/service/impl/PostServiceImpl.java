@@ -159,17 +159,12 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Long getBlogCountByTag(Tag tag) {
-        return postRepository.countByTagsContaining(tag.getName());
-    }
-
-    @Override
     public List<Post> findAll() {
         return postRepository.findAll();
     }
 
     @Override
-    public void updateViewsCountById(Long blogId) {
+    public void increaseViewsCountById(Long blogId) {
         Post dbPost = postRepository.findOne(blogId);
         dbPost.setViews(dbPost.getViews() + 1);
     }
@@ -192,5 +187,17 @@ public class PostServiceImpl implements PostService {
             vo.setNextPostTitle(next.getTitle());
         }
         return vo;
+    }
+
+    @Override
+    public void increaseUpVote(Long id) {
+        Post post = postRepository.findOne(id);
+        post.setUpVote(post.getUpVote() + 1);
+    }
+
+    @Override
+    public void increaseDownVote(Long id) {
+        Post post = postRepository.findOne(id);
+        post.setDownVote(post.getDownVote() + 1);
     }
 }

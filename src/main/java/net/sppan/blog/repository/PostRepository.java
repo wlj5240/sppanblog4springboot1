@@ -53,12 +53,4 @@ public interface PostRepository extends JpaRepository<Post, Long> {
      * @return
      */
     Page<Post> findByTagsContaining(String tagName, Pageable pageable);
-
-    /**
-     * 根据标签获取文章数量
-     *
-     * @param tagName
-     * @return
-     */
-    Long countByTagsContaining(String tagName);
 }

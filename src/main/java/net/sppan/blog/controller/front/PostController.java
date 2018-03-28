@@ -1,5 +1,7 @@
 package net.sppan.blog.controller.front;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import net.sppan.blog.common.JsonResult;
 import net.sppan.blog.common.vo.PostVo;
 import net.sppan.blog.entity.Post;
@@ -15,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * create by SPPan 2018/1/10
@@ -28,6 +32,15 @@ public class PostController extends _BaseController {
     private PostService postService;
     @Resource
     private SearcherKit searcherKit;
+
+    // 一分钟内不允许重复点赞
+    private static Cache<String, Integer> upVoteCache = CacheBuilder.newBuilder()
+            .expireAfterWrite(1, TimeUnit.MINUTES)
+            .build();
+    // 一分钟内不允许重复点踩
+    private static Cache<String, Integer> downVoteCache = CacheBuilder.newBuilder()
+            .expireAfterWrite(1, TimeUnit.MINUTES)
+            .build();
 
     @RequestMapping("/list")
     public JsonResult listAll() {
@@ -108,6 +121,40 @@ public class PostController extends _BaseController {
         try {
             List<Post> list = postService.findFeaturedN(n);
             return JsonResult.ok().setData(list);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return JsonResult.fail(e.getMessage());
+        }
+    }
+
+    @RequestMapping("/up_vote/{id}")
+    public JsonResult upVote(HttpServletRequest request, @PathVariable Long id) {
+        try {
+            String key = request.getSession().getId() + id;
+            Integer ifPresent = upVoteCache.getIfPresent(key);
+            upVoteCache.put(key, 1);
+            if (ifPresent == null) {
+                postService.increaseUpVote(id);
+                return JsonResult.ok().setData(0);
+            }
+            return JsonResult.ok().setData(-1);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return JsonResult.fail(e.getMessage());
+        }
+    }
+
+    @RequestMapping("/down_vote/{id}")
+    public JsonResult downVote(HttpServletRequest request, @PathVariable Long id) {
+        try {
+            String key = request.getSession().getId() + id;
+            Integer ifPresent = downVoteCache.getIfPresent(key);
+            downVoteCache.put(key, 1);
+            if (ifPresent == null) {
+                postService.increaseDownVote(id);
+                return JsonResult.ok().setData(0);
+            }
+            return JsonResult.ok().setData(-1);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return JsonResult.fail(e.getMessage());

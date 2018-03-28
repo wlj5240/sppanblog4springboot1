@@ -88,14 +88,6 @@ public interface PostService {
     Page<Post> findByTagName(String tagName, Pageable pageable);
 
     /**
-     * 根据标签统计文章数量
-     *
-     * @param tag
-     * @return
-     */
-    Long getBlogCountByTag(Tag tag);
-
-    /**
      * 查询所有博客
      *
      * @return
@@ -107,7 +99,11 @@ public interface PostService {
      *
      * @param blogId
      */
-    void updateViewsCountById(Long blogId);
+    void increaseViewsCountById(Long blogId);
 
     PostVo findVoById(Long id);
+
+    void increaseUpVote(Long id);
+
+    void increaseDownVote(Long id);
 }

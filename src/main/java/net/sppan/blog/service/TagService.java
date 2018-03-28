@@ -61,14 +61,9 @@ public interface TagService {
      */
     List<String> findAllNameList();
 
-    /**
-     * 把所有标签同步到标签表中,标签文章数量只加不减
-     *
-     * @param tags
-     */
-    public void synBlogTag(String tags);
-
-    void countTagHasBlog();
-
     Tag findByName(String tagName);
+
+    void increaseCount(String tagName);
+
+    void decreaseCount(String tagName);
 }

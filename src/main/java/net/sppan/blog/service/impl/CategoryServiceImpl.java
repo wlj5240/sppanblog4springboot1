@@ -1,19 +1,17 @@
 package net.sppan.blog.service.impl;
 
-import java.util.List;
-
-import javax.annotation.Resource;
-import javax.transaction.Transactional;
-
+import net.sppan.blog.entity.Category;
+import net.sppan.blog.exception.ServiceException;
+import net.sppan.blog.repository.CategoryRepository;
+import net.sppan.blog.service.CategoryService;
+import net.sppan.blog.service.PostService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import net.sppan.blog.entity.Category;
-import net.sppan.blog.exception.ServiceException;
-import net.sppan.blog.repository.CategoryRepository;
-import net.sppan.blog.service.PostService;
-import net.sppan.blog.service.CategoryService;
+import javax.annotation.Resource;
+import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 @Transactional
@@ -73,13 +71,14 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void countCategoryHasBlog() {
-        List<Category> list = categoryRepository.findAll();
-        for (Category category : list) {
-            Long count = postService.getBlogCountByCategory(category);
-            category.setCount(count.intValue());
-        }
-        categoryRepository.save(list);
+    public void increaseCount(Long id) {
+        Category category = categoryRepository.findOne(id);
+        category.setCount(category.getCount() + 1);
     }
 
+    @Override
+    public void decreaseCount(Long id) {
+        Category category = categoryRepository.findOne(id);
+        category.setCount(category.getCount() - 1);
+    }
 }

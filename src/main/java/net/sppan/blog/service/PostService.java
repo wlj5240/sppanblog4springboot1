@@ -54,7 +54,7 @@ public interface PostService {
      */
     Page<Post> findAll(Pageable pageable);
 
-    void saveOrUpdate(Post post, String tagArray);
+    void saveOrUpdate(Post post);
 
     /**
      * 改变博客状态

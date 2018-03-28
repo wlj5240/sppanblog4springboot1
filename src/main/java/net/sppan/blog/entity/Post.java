@@ -53,9 +53,7 @@ public class Post implements Serializable {
     @Column(length = 500)
     private String summary;
 
-    @ManyToMany(targetEntity = Tag.class)
-    @JoinTable(name = "tb_post_tag", joinColumns = {@JoinColumn(name = "post_id")}, inverseJoinColumns = {@JoinColumn(name = "tag_id")})
-    private List<Tag> tags;
+    private String tags;
 
     private String title;
 
@@ -134,11 +132,11 @@ public class Post implements Serializable {
         this.summary = summary;
     }
 
-    public List<Tag> getTags() {
+    public String getTags() {
         return tags;
     }
 
-    public void setTags(List<Tag> tags) {
+    public void setTags(String tags) {
         this.tags = tags;
     }
 
@@ -157,5 +155,4 @@ public class Post implements Serializable {
     public void setViews(Integer views) {
         this.views = views;
     }
-
 }

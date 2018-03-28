@@ -1,5 +1,6 @@
 package net.sppan.blog.service.impl;
 
+import com.google.common.collect.Sets;
 import net.sppan.blog.common.vo.PostVo;
 import net.sppan.blog.entity.Category;
 import net.sppan.blog.entity.Post;
@@ -14,13 +15,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -67,29 +69,32 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public void saveOrUpdate(Post post, String tagArray) {
+    public void saveOrUpdate(Post post) {
         if (post == null) {
             throw new ServiceException("操作对象不能为空");
         }
-
-        List<Tag> tagList = new ArrayList<>();
-
-        if (!StringUtils.isEmpty(tagArray)) {
-            String[] tags = tagArray.split(",");
-            for (String tagName : tags) {
-                Tag tag = tagService.findByName(tagName);
-                if (tag == null) {
-                    tag = new Tag();
-                    tag.setName(tagName);
-                    tagService.saveOrUpdate(tag);
-                }
-                tagList.add(tag);
-            }
-        }
-
-        post.setTags(tagList);
         if (post.getId() != null) {
             Post dbPost = findById(post.getId());
+            // 如果修改了分类，则重新进行分类统计
+            if (post.getCategory().getId() != dbPost.getCategory().getId()) {
+                // 新分类增加数量
+                categoryService.increaseCount(post.getCategory().getId());
+                // 旧分类减少数量
+                categoryService.decreaseCount(dbPost.getCategory().getId());
+            }
+            // 重新对标签进行统计
+            List newTags = CollectionUtils.arrayToList(post.getTags().split(","));
+            List oldTags = CollectionUtils.arrayToList(dbPost.getTags().split(","));
+            // 增加的标签
+            Set<String> differenceSetNew = Sets.difference(Sets.newHashSet(newTags), Sets.newHashSet(oldTags));
+            for (String diff : differenceSetNew) {
+                tagService.increaseCount(diff);
+            }
+            // 删除的标签
+            Set<String> differenceSetOld = Sets.difference(Sets.newHashSet(oldTags), Sets.newHashSet(newTags));
+            for (String diff : differenceSetOld) {
+                tagService.decreaseCount(diff);
+            }
             dbPost.setTitle(post.getTitle());
             dbPost.setCategory(post.getCategory());
             dbPost.setPrivacy(post.getPrivacy());
@@ -97,7 +102,18 @@ public class PostServiceImpl implements PostService {
             dbPost.setSummary(post.getSummary());
             dbPost.setTags(post.getTags());
             postRepository.saveAndFlush(dbPost);
+
         } else {
+            // 分类中文章统计+1
+            categoryService.increaseCount(post.getCategory().getId());
+
+            // 标签中文章统计+1
+            if (!StringUtils.isEmpty(post.getTags())) {
+                String[] tagArray = post.getTags().split(",");
+                for (String tagName : tagArray) {
+                   tagService.increaseCount(tagName);
+                }
+            }
             //设置博客基本属性
             post.setCreateAt(new Date());
             post.setFeatured(0);
@@ -106,16 +122,6 @@ public class PostServiceImpl implements PostService {
             post.setSummary(post.getSummary());
             postRepository.save(post);
         }
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                //重新统计分类下面的文章数量
-                categoryService.countCategoryHasBlog();
-                //重新统计标签下面的文章数量
-                tagService.countTagHasBlog();
-            }
-        }).start();
     }
 
     @Override

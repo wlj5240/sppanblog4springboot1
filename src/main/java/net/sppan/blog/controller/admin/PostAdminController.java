@@ -38,11 +38,10 @@ public class PostAdminController extends _BaseAdminController {
     }
 
     @PostMapping("/save")
-    public JsonResult save(Post post, String tagArray) {
+    public JsonResult save(Post post) {
         try {
-            System.out.println(tagArray);
             post.setAuthor(getLoginUser());
-            postService.saveOrUpdate(post, tagArray);
+            postService.saveOrUpdate(post);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return JsonResult.fail(e.getMessage());

@@ -1,21 +1,17 @@
 package net.sppan.blog.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.annotation.Resource;
-import javax.transaction.Transactional;
-
 import net.sppan.blog.entity.Tag;
 import net.sppan.blog.exception.ServiceException;
 import net.sppan.blog.repository.TagRepository;
-import net.sppan.blog.service.PostService;
 import net.sppan.blog.service.TagService;
-import net.sppan.blog.utils.StrKit;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Transactional
@@ -23,9 +19,6 @@ public class TagServiceImpl implements TagService {
 
     @Resource
     private TagRepository tagRepository;
-
-    @Resource
-    private PostService postService;
 
     @Override
     public List<Tag> findAll() {
@@ -87,44 +80,30 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public void synBlogTag(String tags) {
-        if (StrKit.notBlank(tags)) {
-            String[] split = tags.split(",");
-
-            for (String tagName : split) {
-                Tag dbTag = tagRepository.findByName(tagName);
-                if (dbTag == null) {
-                    dbTag = new Tag();
-                    dbTag.setName(tagName);
-                    dbTag.setCount(1);
-                } else {
-                    //标签统计+1
-                    Integer oldCount = dbTag.getCount();
-                    if (oldCount == null) {
-                        oldCount = 0;
-                    }
-                    dbTag.setCount(oldCount + 1);
-                }
-                saveOrUpdate(dbTag);
-            }
-        }
-    }
-
-    @Override
-    public void countTagHasBlog() {
-        List<Tag> list = tagRepository.findAll();
-        for (Tag tag : list) {
-            Long count = postService.getBlogCountByTag(tag);
-            tag.setCount(count.intValue());
-        }
-        tagRepository.save(list);
-    }
-
-    @Override
     public Tag findByName(String tagName) {
         if (tagName == null) {
             return null;
         }
         return tagRepository.findByName(tagName);
+    }
+
+    @Override
+    public void increaseCount(String tagName) {
+        Tag tag = tagRepository.findByName(tagName);
+        if (tag == null) {
+            tag = new Tag();
+            tag.setName(tagName);
+            tag.setCount(1);
+            tag.setStatus(0);
+        } else {
+            tag.setCount(tag.getCount() + 1);
+        }
+        tagRepository.saveAndFlush(tag);
+    }
+
+    @Override
+    public void decreaseCount(String tagName) {
+        Tag tag = tagRepository.findByName(tagName);
+        tag.setCount(tag.getCount() - 1);
     }
 }

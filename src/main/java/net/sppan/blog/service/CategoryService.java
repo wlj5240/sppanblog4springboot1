@@ -53,5 +53,7 @@ public interface CategoryService {
      */
     public void changeStatus(Long id);
 
-    public void countCategoryHasBlog();
+    void increaseCount(Long id);
+
+    void  decreaseCount(Long id);
 }

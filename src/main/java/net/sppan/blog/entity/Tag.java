@@ -33,10 +33,6 @@ public class Tag implements Serializable {
     @Column(nullable = false, columnDefinition = "int default 0")
     private Integer count;
 
-    @ManyToMany(targetEntity = Post.class)
-    @JoinTable(name = "tb_post_tag", joinColumns = {@JoinColumn(name = "tag_id")}, inverseJoinColumns = {@JoinColumn(name = "post_id")})
-    private List<Post> posts;
-
     public Long getId() {
         return id;
     }
@@ -67,13 +63,5 @@ public class Tag implements Serializable {
 
     public void setCount(Integer count) {
         this.count = count;
-    }
-
-    public List<Post> getPosts() {
-        return posts;
-    }
-
-    public void setPosts(List<Post> posts) {
-        this.posts = posts;
     }
 }
